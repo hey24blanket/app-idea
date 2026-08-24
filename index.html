@@ -333,7 +333,7 @@
       border-bottom-right-radius: var(--radius-md);
     }
 
-    /* Mobile Layout */
+    /* Mobile Responsive Card Transformation (< 640px) */
     @media (max-width: 640px) {
       body { padding: 20px 14px 70px; }
       .glass-card { padding: 20px 16px; }
@@ -388,6 +388,7 @@
       top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(11, 17, 32, 0.75);
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       display: none;
       justify-content: center;
       align-items: center;
@@ -542,7 +543,7 @@
   <div class="glass-card modal-content">
     <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 8px;">⚙️ Gemini API 설정</h2>
     <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 16px;">
-      Google AI Studio 무료 API 키를 등록하면 실시간 기획안을 생성합니다.
+      Google AI Studio 무료 API 키를 등록하면 실시간 기획안을 생성합니다. (기기 로컬에만 안전하게 저장)
     </p>
 
     <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -554,8 +555,9 @@
       <div>
         <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">모델 선택</label>
         <select class="glass-input" id="modelSelect" style="cursor: pointer; background: #1E293B;">
-          <option value="gemini-2.5-pro">Gemini 2.5 Pro (심층 추론)</option>
-          <option value="gemini-2.5-flash">Gemini 2.5 Flash (초고속)</option>
+          <option value="gemini-2.0-flash">Gemini 2.0 Flash (초고속 추천)</option>
+          <option value="gemini-1.5-pro">Gemini 1.5 Pro (심층 추론)</option>
+          <option value="gemini-1.5-flash">Gemini 1.5 Flash (경량)</option>
         </select>
       </div>
 
@@ -571,10 +573,6 @@
 
 <!-- LOGIC -->
 <script>
-  // Automatic default fallback key setup (Safe localStorage initialization)
-  if (!localStorage.getItem('gemini_api_key')) {
-  }
-
   let verifiedApiCatalog = [];
   let eligibleApis = [];
 
@@ -639,7 +637,6 @@
   let currentSortKey = 'id';
   let isSortAsc = false;
 
-  // Load CSV Master Catalog
   async function loadApiCatalog() {
     try {
       const res = await fetch('./final_api_catalog_285.csv');
@@ -654,7 +651,6 @@
     }
   }
 
-  // Lightweight robust CSV parser
   function parseCSV(text) {
     const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
     if (lines.length < 2) return [];
@@ -826,15 +822,19 @@
     renderTable();
   }
 
-  // GEMINI INFERENCE DRIVEN BY REAL CSV APIS
   async function generateNewIdea() {
     const apiKey = localStorage.getItem('gemini_api_key');
     const genBtn = document.getElementById('genBtn');
     
+    if (!apiKey) {
+      alert("우측 상단 [⚙️ Key 설정]을 눌러 Gemini API 키를 먼저 입력해 주세요.");
+      openKeyModal();
+      return;
+    }
+
     genBtn.disabled = true;
     genBtn.innerHTML = `<span>⏳</span> 추론 중...`;
 
-    // 1. Pick 2-3 candidate APIs from eligible catalog
     let selectedCandidates = [];
     if (eligibleApis.length >= 3) {
       const shuffled = [...eligibleApis].sort(() => 0.5 - Math.random());
@@ -851,9 +851,14 @@
       ];
     }
 
-    const model = localStorage.getItem('gemini_model') || 'gemini-2.5-pro';
+    let model = localStorage.getItem('gemini_model') || 'gemini-2.0-flash';
+    if (model.includes('2.5')) {
+      model = 'gemini-2.0-flash';
+      localStorage.setItem('gemini_model', model);
+    }
+
     const prompt = `
-당신은 전 세계 실시간 오픈 API를 조합해 극도로 독창적이고 현실성 높은 소프트웨어를 기획하는 수석 프로덕트 아키텍트입니다.
+당신은 전 세계 실시간 오픈 API를 조합해 독창적이고 현실성 높은 소프트웨어를 기획하는 수석 프로덕트 아키텍트입니다.
 아래에 제공된 [실제 검증 완료된 생존 API 후보군]을 반드시 2개 이상 활용하여 참신한 웹/앱 소프트웨어를 기획하세요.
 
 [선정된 실제 API 후보군]:
@@ -862,7 +867,7 @@ ${JSON.stringify(selectedCandidates, null, 2)}
 [작성 규칙]:
 1. 앱의 "title"은 한글 없이 세련된 영문 단독 표기(예: SoundPulse, OrbitPulse, NeonMetro)로만 작성하세요.
 2. "originality"는 흔한 데이터를 다른 감각(사운드/빛/심리)으로 재해석했거나 참신한 통찰을 이끌어냈는지를 평가하여 8.0~9.8 사이 실수로 매기세요.
-3. 반환은 마크다운(\`\`\`json) 없이 순수 JSON 객체 단 1개만 응답하세요.
+3. 반환은 반드시 지정된 JSON Schema 포맷에 맞추어 JSON 형식으로만 응답하세요.
 
 JSON Schema:
 {
@@ -886,11 +891,25 @@ JSON Schema:
       const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            responseMimeType: "application/json"
+          }
+        })
       });
+
       const data = await resp.json();
+
+      if (data.error) {
+        throw new Error(`[구글 API 오류 ${data.error.code}] ${data.error.message}`);
+      }
+
+      if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
+        throw new Error("Gemini 응답 데이터가 비어 있습니다. 잠시 후 다시 시도해 주세요.");
+      }
+
       let rawText = data.candidates[0].content.parts[0].text.trim();
-      rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
       const parsed = JSON.parse(rawText);
 
       const nextId = ideasVault.length ? Math.max(...ideasVault.map(i => i.id)) + 1 : 1;
@@ -902,7 +921,7 @@ JSON Schema:
       renderTable();
       showToast(`✨ #${parsed.id} ${parsed.title} 생성 완료!`);
     } catch (e) {
-      alert("Gemini 생성 오류: " + e.message);
+      alert(e.message);
     } finally {
       genBtn.disabled = false;
       genBtn.innerHTML = `<span>✨</span> 새 아이디어`;
@@ -932,7 +951,7 @@ JSON Schema:
 
   function openKeyModal() {
     document.getElementById('apiKeyInput').value = localStorage.getItem('gemini_api_key') || '';
-    document.getElementById('modelSelect').value = localStorage.getItem('gemini_model') || 'gemini-2.5-pro';
+    document.getElementById('modelSelect').value = localStorage.getItem('gemini_model') || 'gemini-2.0-flash';
     document.getElementById('keyModal').style.display = 'flex';
   }
   function closeKeyModal() {
