@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💡 IDEA VAULT - API 결합 앱 기획 아카이브</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM: WARM CLAYMORPHISM & SOFT UI (Based on Foundations Spec)
+       ========================================================================== */
+    :root {
+      --bg-base: #ECE7DE;
+      --bg-surface: #EDE8DF;
+      --bg-card: #ECE7DE;
+      
+      /* Soft Shadows */
+      --shadow-raised: -7px -7px 16px rgba(255, 255, 255, 0.9), 7px 7px 16px rgba(185, 175, 160, 0.45);
+      --shadow-raised-sm: -4px -4px 10px rgba(255, 255, 255, 0.85), 4px 4px 10px rgba(185, 175, 160, 0.35);
+      --shadow-raised-lg: -10px -10px 24px rgba(255, 255, 255, 0.95), 10px 10px 24px rgba(185, 175, 160, 0.5);
+      --shadow-inset: inset 3px 3px 6px rgba(175, 165, 150, 0.4), inset -3px -3px 6px rgba(255, 255, 255, 0.85);
+      --shadow-inset-deep: inset 4px 4px 8px rgba(170, 160, 145, 0.45), inset -4px -4px 8px rgba(255, 255, 255, 0.9);
+      
+      /* Accent Colors */
+      --primary-teal: #0C535A;
+      --primary-teal-hover: #083D43;
+      --primary-teal-shadow: 4px 4px 12px rgba(12, 83, 90, 0.35);
+      
+      /* Typography Colors */
+      --text-main: #2C3639;
+      --text-sub: #5E6A6D;
+      --text-muted: #8E999B;
+      --text-accent: #0C535A;
+      
+      /* Border Tokens */
+      --border-subtle: 1px solid rgba(255, 255, 255, 0.65);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-pill: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 32px 20px 80px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 1080px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* ==========================================================================
+       FOUNDATIONS & COMMON COMPONENTS
+       ========================================================================== */
+    .clay-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-raised);
+      border: var(--border-subtle);
+      padding: 28px;
+      position: relative;
+    }
+
+    .clay-card-raised {
+      box-shadow: var(--shadow-raised-lg);
+    }
+
+    .clay-inset {
+      background: var(--bg-base);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-inset);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: var(--primary-teal);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 12px 24px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--primary-teal-shadow);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-primary:hover {
+      background: var(--primary-teal-hover);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .btn-secondary {
+      background: var(--bg-base);
+      color: var(--text-main);
+      border: var(--border-subtle);
+      border-radius: var(--radius-pill);
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--shadow-raised-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover {
+      box-shadow: var(--shadow-raised);
+    }
+    .btn-secondary:active, .btn-secondary.active {
+      box-shadow: var(--shadow-inset);
+      color: var(--primary-teal);
+      background: #E8E3DA;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: var(--shadow-raised-sm);
+      background: var(--bg-base);
+      border: var(--border-subtle);
+    }
+    .badge-teal {
+      background: var(--primary-teal);
+      color: #FFFFFF;
+      box-shadow: var(--primary-teal-shadow);
+      border: none;
+    }
+
+    /* Input Fields & Select */
+    .input-field {
+      background: var(--bg-base);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-inset);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 12px 20px;
+      font-size: 14px;
+      color: var(--text-main);
+      outline: none;
+      width: 100%;
+      transition: box-shadow 0.2s;
+    }
+    .input-field:focus {
+      box-shadow: inset 3px 3px 6px rgba(12, 83, 90, 0.2), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+      border-color: rgba(12, 83, 90, 0.3);
+    }
+
+    /* ==========================================================================
+       HEADER & CONTROL STRIP
+       ========================================================================== */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .brand-title {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-main);
+    }
+    .brand-subtitle {
+      font-size: 13px;
+      color: var(--text-sub);
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ==========================================================================
+       HERO CARD: SELECTED / LATEST IDEA (Detailed View)
+       ========================================================================== */
+    .hero-card {
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      position: relative;
+    }
+    .hero-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      gap: 16px;
+    }
+    .idea-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary-teal);
+    }
+    .idea-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 4px 0 8px;
+    }
+    .idea-hook {
+      font-size: 16px;
+      color: var(--text-sub);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    /* Metrics Grid */
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .metric-pill {
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-raised-sm);
+      background: var(--bg-surface);
+      border: var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .metric-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .metric-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--primary-teal);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Pipeline & Architecture Section */
+    .section-box {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: var(--radius-md);
+    }
+    .section-title {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .api-tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .api-tag-item {
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      box-shadow: var(--shadow-raised-sm);
+      border: var(--border-subtle);
+      font-size: 13px;
+      flex: 1 1 calc(33.333% - 10px);
+      min-width: 220px;
+    }
+    .api-tag-name {
+      font-weight: 700;
+      color: var(--primary-teal);
+      margin-bottom: 4px;
+    }
+    .api-tag-role {
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    @media (max-width: 768px) {
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+
+    .hero-footer-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(185, 175, 160, 0.25);
+    }
+
+    /* ==========================================================================
+       ARCHIVE CONTROLS & TABLE / MATRIX VIEW
+       ========================================================================== */
+    .filter-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .tab-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .search-sort-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex: 1;
+      max-width: 480px;
+    }
+
+    /* Archive Table */
+    .archive-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 10px;
+    }
+    .archive-table th {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      padding: 0 16px 8px;
+      text-align: left;
+    }
+    .archive-table th.sortable {
+      cursor: pointer;
+      user-select: none;
+    }
+    .archive-table th.sortable:hover {
+      color: var(--primary-teal);
+    }
+    .table-row {
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-raised-sm);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .table-row:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-raised);
+    }
+    .table-row.selected {
+      box-shadow: var(--shadow-inset);
+      border: 1px solid var(--primary-teal);
+      background: #E8E3DA;
+    }
+    .table-row td {
+      padding: 16px;
+      font-size: 14px;
+      border-top: var(--border-subtle);
+      border-bottom: var(--border-subtle);
+    }
+    .table-row td:first-child {
+      border-left: var(--border-subtle);
+      border-top-left-radius: var(--radius-md);
+      border-bottom-left-radius: var(--radius-md);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: var(--primary-teal);
+    }
+    .table-row td:last-child {
+      border-right: var(--border-subtle);
+      border-top-right-radius: var(--radius-md);
+      border-bottom-right-radius: var(--radius-md);
+    }
+
+    /* Slider styling */
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 10px 0;
+    }
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      background: transparent;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--bg-base);
+      box-shadow: var(--shadow-inset);
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 22px;
+      width: 22px;
+      border-radius: 50%;
+      background: var(--primary-teal);
+      cursor: pointer;
+      margin-top: -7px;
+      box-shadow: var(--primary-teal-shadow);
+      border: 2px solid #FFFFFF;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(44, 54, 57, 0.4);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .modal-content {
+      width: 100%;
+      max-width: 520px;
+      animation: modalPop 0.25s ease;
+    }
+    @keyframes modalPop {
+      0% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Toast Notification */
+    .toast-box {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--primary-teal);
+      color: #FFFFFF;
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      box-shadow: var(--primary-teal-shadow);
+      font-size: 14px;
+      font-weight: 600;
+      display: none;
+      z-index: 2000;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- ========================================================================
+       TOP HEADER
+       ======================================================================== -->
+  <header class="app-header">
+    <div>
+      <div class="brand-title">
+        <span>💡</span> IDEA VAULT
+        <span class="badge badge-teal">PRO V2.5</span>
+      </div>
+      <div class="brand-subtitle">285개 공공·무료 API 융합 아이디어 & 아키텍처 인큐베이터</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-secondary" onclick="openKeyModal()">⚙️ Gemini Key 설정</button>
+      <button class="btn-primary" onclick="generateNewIdea()" id="genBtn">
+        <span>✨</span> 새 아이디어 생성
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       HERO CARD: SELECTED / LATEST IDEA (Detailed View)
+       ======================================================================== -->
+  <section class="clay-card clay-card-raised hero-card" id="heroSection">
+    <div class="hero-header">
+      <div>
+        <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 6px;">
+          <span class="idea-num" id="heroNum">#042</span>
+          <span class="badge badge-teal" id="heroMode">🔀 이종 융합형</span>
+          <span class="badge" id="heroDivergence">이질감 Lv.4</span>
+        </div>
+        <h1 class="idea-title" id="heroTitle">사운드이스케이프 (SoundEscape)</h1>
+        <p class="idea-hook" id="heroHook">"실시간 비 오는 파리의 골목 소리와 로컬 인디 라디오를 자동 믹싱하는 워크스페이스"</p>
+      </div>
+    </div>
+
+    <!-- Metrics Bar -->
+    <div class="metrics-bar">
+      <div class="metric-pill">
+        <span class="metric-label">💡 독창성 지수</span>
+        <span class="metric-value" id="heroOriginality">9.4 <span style="font-size: 13px; color: var(--text-muted);">/10</span></span>
+      </div>
+      <div class="metric-pill">
+        <span class="metric-label">⏱️ 예상 개발 소요</span>
+        <span class="metric-value" id="heroDays">2일 컷 <span style="font-size: 13px; color: var(--text-muted);">(MVP)</span></span>
+      </div>
+      <div class="metric-pill">
+        <span class="metric-label">🛠️ 실현 가능성</span>
+        <span class="metric-value" id="heroFeasibility">8.8 <span style="font-size: 13px; color: var(--text-muted);">/10</span></span>
+      </div>
+      <div class="metric-pill">
+        <span class="metric-label">💰 인프라 비용</span>
+        <span class="metric-value" style="color: #2D6A4F;">0원 <span style="font-size: 13px; color: var(--text-muted);">(린 아키텍처)</span></span>
+      </div>
+    </div>
+
+    <!-- API Pipeline -->
+    <div class="clay-inset section-box">
+      <div class="section-title">🔌 결합된 무료 API & 데이터 파이프라인</div>
+      <div class="api-tags-container" id="heroApis">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+
+    <!-- Detailed 2-Column Info -->
+    <div class="detail-grid">
+      <div class="clay-inset section-box">
+        <div class="section-title">🔍 이 앱이 하는 일 (핵심 UX)</div>
+        <p id="heroUx" style="font-size: 14px; line-height: 1.6; color: var(--text-sub);">
+          사용자가 전 세계 지도를 탐색할 때, 선택한 도시의 실시간 날씨(비, 눈, 맑음)를 조회하여 현지 로컬 인디 라디오와 실시간 환경음(빗소리 등)을 브라우저 로컬 오디오 엔진에서 합성해 재생합니다.
+        </p>
+      </div>
+      <div class="clay-inset section-box">
+        <div class="section-title">🏪 유사 서비스 vs 차별화 포인트</div>
+        <p id="heroDiff" style="font-size: 14px; line-height: 1.6; color: var(--text-sub);">
+          'Radio Garden'은 라디오 단일 스트림만 제공하지만, 이 앱은 현지 날씨를 오디오 믹싱의 파라미터로 사용하여 실제 현지에 머무는 듯한 몰입감을 줍니다.
+        </p>
+      </div>
+    </div>
+
+    <!-- Lean Architecture Tip -->
+    <div class="clay-inset section-box" style="margin-top: 16px; background: rgba(12, 83, 90, 0.04); border-color: rgba(12, 83, 90, 0.15);">
+      <div class="section-title" style="color: var(--primary-teal);">💡 서버비 0원 린 아키텍처 팁</div>
+      <p id="heroLean" style="font-size: 13px; line-height: 1.5; color: var(--text-main);">
+        모든 오디오 합성 및 날씨 매핑은 유저 스마트폰/브라우저의 Web Audio API에서 로컬 처리하므로 개발자 서버 트래픽 비용이 전혀 발생하지 않습니다.
+      </p>
+    </div>
+
+    <!-- Actions -->
+    <div class="hero-footer-actions">
+      <button class="btn-secondary" onclick="copyTelegramTeaser()">
+        <span>📱</span> 텔레그램 3줄 티저 복사
+      </button>
+      <button class="btn-secondary" onclick="copyShareLink()">
+        <span>🔗</span> 다이렉트 링크 복사
+      </button>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       ARCHIVE & MATRIX SECTION
+       ======================================================================== -->
+  <section class="clay-card">
+    <div class="filter-panel">
+      <!-- Mode Tabs -->
+      <div class="tab-group" id="modeTabs">
+        <button class="btn-secondary active" onclick="filterByMode('ALL')">전체 (<span id="countAll">0</span>)</button>
+        <button class="btn-secondary" onclick="filterByMode('🎯 도메인 집중형')">🎯 도메인 집중</button>
+        <button class="btn-secondary" onclick="filterByMode('🔀 이종 융합형')">🔀 이종 융합</button>
+        <button class="btn-secondary" onclick="filterByMode('🎲 역발상 합성형')">🎲 역발상</button>
+      </div>
+
+      <!-- Search & Sort -->
+      <div class="search-sort-group">
+        <input type="text" class="input-field" placeholder="API, 앱 이름, 키워드 검색..." id="searchInput" oninput="renderTable()">
+      </div>
+    </div>
+
+    <!-- Archive Table -->
+    <div style="overflow-x: auto;">
+      <table class="archive-table">
+        <thead>
+          <tr>
+            <th style="width: 70px;">ID</th>
+            <th>기획명 / 한 줄 콘셉트</th>
+            <th style="width: 140px;">발상 모드</th>
+            <th class="sortable" style="width: 110px;" onclick="setSort('originality')">독창성 ⇅</th>
+            <th class="sortable" style="width: 110px;" onclick="setSort('days')">개발소요 ⇅</th>
+            <th class="sortable" style="width: 110px;" onclick="setSort('feasibility')">실현성 ⇅</th>
+          </tr>
+        </thead>
+        <tbody id="archiveTbody">
+          <!-- Injected via JS -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<!-- ========================================================================
+     MODAL: GEMINI API KEY & SETTINGS
+     ======================================================================== -->
+<div class="modal-overlay" id="keyModal">
+  <div class="clay-card clay-card-raised modal-content">
+    <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 8px;">⚙️ Gemini API 설정</h2>
+    <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 20px; line-height: 1.4;">
+      Google AI Studio에서 발급받은 무료 API 키를 등록하면 브라우저에서 직접 실시간 기획안을 생성합니다. (기기 로컬스토리지에만 저장)
+    </p>
+
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div>
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 6px;">
+          GEMINI_API_KEY (무료 티어)
+        </label>
+        <input type="password" class="input-field" id="apiKeyInput" placeholder="AIzaSy...">
+      </div>
+
+      <div>
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 6px;">
+          기본 모델 선택
+        </label>
+        <select class="input-field" id="modelSelect" style="cursor: pointer;">
+          <option value="gemini-2.5-pro">Gemini 2.5 Pro (심층 추론 추천)</option>
+          <option value="gemini-2.5-flash">Gemini 2.5 Flash (초고속)</option>
+        </select>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+        <button class="btn-secondary" onclick="closeKeyModal()">닫기</button>
+        <button class="btn-primary" onclick="saveApiKey()">저장하기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-box" id="toast">알림 메시지</div>
+
+<!-- ========================================================================
+     APP LOGIC & INITIAL DATASET
+     ======================================================================== -->
+<script>
+  // 1. Initial Master Dataset (Pre-populated high-quality ideas)
+  let ideasVault = [
+    {
+      id: 42,
+      title: "사운드이스케이프 (SoundEscape)",
+      hook: "실시간 비 오는 파리의 골목 소리와 로컬 인디 라디오를 자동 믹싱하는 워크스페이스",
+      mode: "🔀 이종 융합형",
+      divergence: 4,
+      originality: 9.4,
+      feasibility: 8.8,
+      devDays: 2,
+      apis: [
+        { name: "Radio Browser API", role: "전 세계 35,000개 이상 실시간 라디오 오디오 스트림" },
+        { name: "Open-Meteo API", role: "선택한 도시의 실시간 강수, 기온, 풍속 기상 벡터" },
+        { name: "Freesound API", role: "날씨 상태와 연동되는 빗소리, 파도 소리 등 환경 앰비언스 음원" }
+      ],
+      ux: "사용자가 전 세계 지도를 탐색할 때, 선택한 도시의 실시간 날씨(비, 눈, 맑음)를 조회하여 현지 로컬 인디 라디오와 실시간 환경음(빗소리 등)을 브라우저 로컬 오디오 엔진에서 합성해 재생합니다.",
+      diff: "'Radio Garden'은 라디오 단일 스트림만 제공하지만, 이 앱은 현지 날씨를 오디오 믹싱의 파라미터로 사용하여 실제 현지에 머무는 듯한 몰입감을 줍니다.",
+      lean: "모든 오디오 합성 및 날씨 매핑은 유저 스마트폰/브라우저의 Web Audio API에서 로컬 처리하므로 개발자 서버 트래픽 비용이 전혀 발생하지 않습니다."
+    },
+    {
+      id: 41,
+      title: "어노말리 어스 (Anomaly Earth)",
+      hook: "지구가 평소와 다르게 행동하는 순간을 실시간 포착하는 글로벌 이상 징후 레이더",
+      mode: "🔀 이종 융합형",
+      divergence: 3,
+      originality: 8.9,
+      feasibility: 8.2,
+      devDays: 4,
+      apis: [
+        { name: "OpenAQ API", role: "전 세계 대기질 측정소 PM2.5 / NO2 실시간 급증 감지" },
+        { name: "Open-Meteo API", role: "기압 급강하 및 돌풍 등 비정상 기상 벡터 추적" },
+        { name: "USGS Earthquakes", role: "반경 내 미소 지진 발생 시각 및 진앙 좌표 매핑" }
+      ],
+      ux: "단순히 대기질을 보는 것이 아니라, 기압 급변과 미세먼지 스파이크, 미소 지진이 특정 반경에서 동시 발생했을 때 이상 징후로 포착해 알림을 보냅니다.",
+      diff: "IQAir나 USGS 지진 지도는 단일 데이터만 띄워주지만, 이 앱은 서로 다른 물리적 현상의 동시 이상치를 상관 분석합니다.",
+      lean: "이상치 탐지(Z-score 계산)는 서버 없이 앱 클라이언트가 주기적으로 가져온 3개 JSON 데이터를 대조하여 판별합니다."
+    },
+    {
+      id: 40,
+      title: "코스믹 믹솔로지 (Cosmic Mixology)",
+      hook: "오늘 지구로 쏟아진 태양풍과 우주 방사선 수치를 칵테일 비율로 치환하는 홈텐딩 큐레이터",
+      mode: "🎲 역발상 합성형",
+      divergence: 5,
+      originality: 9.6,
+      feasibility: 9.2,
+      devDays: 1,
+      apis: [
+        { name: "NASA DONKI API", role: "실시간 태양 플레어 강도 및 지자기 Kp 지수 제공" },
+        { name: "TheCocktailDB", role: "칵테일 베이스 주류 비율 및 알코올 도수 메타데이터" }
+      ],
+      ux: "태양 활동이 격렬한 날(Kp 폭풍)에는 강렬하고 스파이시한 위스키 베이스를, 평온한 날에는 청량한 롱드링크 칵테일을 추천하며 우주 기상 뷰어를 띄웁니다.",
+      diff: "단순 재료 검색에 머무는 기존 칵테일 앱과 달리, 우주 현상을 일상의 감각으로 치환하는 위트 있는 엔터테인먼트 경험을 제공합니다.",
+      lean: "단 2개의 경량 REST 엔드포인트만 호출하므로 1인 개발자가 하루 만에 완전 무료로 런칭 가능합니다."
+    },
+    {
+      id: 39,
+      title: "어반 오아시스 (Urban Oasis)",
+      hook: "복잡한 도심 속에서 '등받이 있는 벤치'와 '그늘진 쉼터'만 골라 안내하는 산책 내비",
+      mode: "🎯 도메인 집중형",
+      divergence: 1,
+      originality: 8.5,
+      feasibility: 9.5,
+      devDays: 3,
+      apis: [
+        { name: "OSM Overpass API", role: "OpenStreetMap에서 벤치, 가로수 그늘, 공원 쉼터 노드 추출" },
+        { name: "BigDataCloud Geocoding", role: "GPS 좌표를 즉시 행정동/도로명 텍스트로 역지오코딩" },
+        { name: "Mapbox Maps API", role: "차분한 웜 베이지 톤의 커스텀 벡터 산책로 렌더링" }
+      ],
+      ux: "도심 한복판에서 다리가 아플 때 탭 한 번으로 가장 가까운 '진짜 쉴 수 있는 공공 벤치'와 뷰포인트까지의 조용한 골목길 경로를 안내합니다.",
+      diff: "구글/카카오맵은 상점 중심 검색이지만, 이 앱은 철저히 '공공 휴식 시설물'에만 집중한 힐링 지도입니다.",
+      lean: "OSM Overpass 원본 GeoJSON을 브라우저 IndexedDB에 1km 반경으로 로컬 캐싱하여 지도 API 비용을 0원으로 방어합니다."
+    }
+  ];
+
+  let currentSelectedId = 42;
+  let activeModeFilter = 'ALL';
+  let currentSortKey = 'id';
+  let isSortAsc = false;
+
+  // 2. Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    // Load local storage if exists
+    const saved = localStorage.getItem('vault_ideas');
+    if (saved) {
+      try { ideasVault = JSON.parse(saved); } catch(e){}
+    }
+
+    // Check URL Param (?id=XX)
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramId = urlParams.get('id');
+    if (paramId && ideasVault.some(i => i.id == paramId)) {
+      currentSelectedId = parseInt(paramId);
+    } else {
+      currentSelectedId = ideasVault[0].id;
+    }
+
+    renderHero(currentSelectedId);
+    renderTable();
+  });
+
+  // 3. Render Hero Section
+  function renderHero(id) {
+    const item = ideasVault.find(i => i.id == id);
+    if (!item) return;
+
+    currentSelectedId = id;
+    document.getElementById('heroNum').innerText = `#${String(item.id).padStart(3, '0')}`;
+    document.getElementById('heroMode').innerText = item.mode;
+    document.getElementById('heroDivergence').innerText = `이질감 Lv.${item.divergence}`;
+    document.getElementById('heroTitle').innerText = item.title;
+    document.getElementById('heroHook').innerText = `"${item.hook}"`;
+
+    document.getElementById('heroOriginality').innerHTML = `${item.originality} <span style="font-size: 13px; color: var(--text-muted);">/10</span>`;
+    document.getElementById('heroDays').innerHTML = `${item.devDays}일 컷 <span style="font-size: 13px; color: var(--text-muted);">(MVP)</span>`;
+    document.getElementById('heroFeasibility').innerHTML = `${item.feasibility} <span style="font-size: 13px; color: var(--text-muted);">/10</span>`;
+
+    // APIs
+    const apisHtml = item.apis.map(api => `
+      <div class="api-tag-item">
+        <div class="api-tag-name">🔌 ${api.name}</div>
+        <div class="api-tag-role">${api.role}</div>
+      </div>
+    `).join('');
+    document.getElementById('heroApis').innerHTML = apisHtml;
+
+    document.getElementById('heroUx').innerText = item.ux;
+    document.getElementById('heroDiff').innerText = item.diff;
+    document.getElementById('heroLean').innerText = item.lean;
+
+    // Highlight row in table
+    document.querySelectorAll('.table-row').forEach(row => {
+      row.classList.toggle('selected', row.dataset.id == id);
+    });
+
+    // Update URL without reload
+    window.history.replaceState(null, '', `?id=${id}`);
+  }
+
+  // 4. Render Table
+  function renderTable() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    
+    let filtered = ideasVault.filter(item => {
+      const matchMode = (activeModeFilter === 'ALL' || item.mode.includes(activeModeFilter));
+      const matchSearch = item.title.toLowerCase().includes(search) || 
+                          item.hook.toLowerCase().includes(search) ||
+                          item.apis.some(a => a.name.toLowerCase().includes(search));
+      return matchMode && matchSearch;
+    });
+
+    // Sort
+    filtered.sort((a, b) => {
+      let vA = a[currentSortKey] || a.id;
+      let vB = b[currentSortKey] || b.id;
+      if (currentSortKey === 'days') { vA = a.devDays; vB = b.devDays; }
+      return isSortAsc ? (vA > vB ? 1 : -1) : (vA < vB ? 1 : -1);
+    });
+
+    document.getElementById('countAll').innerText = ideasVault.length;
+
+    const tbody = document.getElementById('archiveTbody');
+    tbody.innerHTML = filtered.map(item => `
+      <tr class="table-row ${item.id === currentSelectedId ? 'selected' : ''}" data-id="${item.id}" onclick="renderHero(${item.id})">
+        <td>#${String(item.id).padStart(3, '0')}</td>
+        <td>
+          <div style="font-weight: 700; color: var(--text-main); margin-bottom: 2px;">${item.title}</div>
+          <div style="font-size: 12px; color: var(--text-sub);">${item.hook}</div>
+        </td>
+        <td><span class="badge" style="font-size: 11px;">${item.mode}</span></td>
+        <td style="font-family: 'JetBrains Mono'; font-weight: 700; color: var(--primary-teal);">⭐ ${item.originality}</td>
+        <td style="font-family: 'JetBrains Mono'; font-weight: 600;">${item.devDays}일</td>
+        <td style="font-family: 'JetBrains Mono'; font-weight: 600;">${item.feasibility}</td>
+      </tr>
+    `).join('');
+  }
+
+  // 5. Filter & Sort Handlers
+  function filterByMode(mode) {
+    activeModeFilter = mode;
+    document.querySelectorAll('#modeTabs .btn-secondary').forEach(btn => {
+      btn.classList.toggle('active', btn.innerText.includes(mode) || (mode === 'ALL' && btn.innerText.includes('전체')));
+    });
+    renderTable();
+  }
+
+  function setSort(key) {
+    if (currentSortKey === key) {
+      isSortAsc = !isSortAsc;
+    } else {
+      currentSortKey = key;
+      isSortAsc = false;
+    }
+    renderTable();
+  }
+
+  // 6. Gemini API Generation
+  async function generateNewIdea() {
+    const apiKey = localStorage.getItem('gemini_api_key');
+    const genBtn = document.getElementById('genBtn');
+    
+    genBtn.disabled = true;
+    genBtn.innerHTML = `<span>⏳</span> 생성 중...`;
+
+    if (!apiKey) {
+      // Offline fallback: Simulated high-quality generation
+      setTimeout(() => {
+        const nextId = ideasVault.length ? Math.max(...ideasVault.map(i => i.id)) + 1 : 1;
+        const newIdea = {
+          id: nextId,
+          title: "바이브 크로노미터 (Vibe Chronometer)",
+          hook: "내 도시의 실시간 소음·날씨와 전 세계 빈티지 재즈 라디오를 융합한 로파이 시계",
+          mode: "🔀 이종 융합형",
+          divergence: 4,
+          originality: 9.3,
+          feasibility: 9.0,
+          devDays: 2,
+          apis: [
+            { name: "Radio Browser API", role: "1960년대 빈티지 재즈/라운지 라디오 스트림" },
+            { name: "WorldTimeAPI", role: "전 세계 표준시 및 서머타임 오프셋 정밀 동기화" },
+            { name: "Open-Meteo API", role: "현재 위치의 기온과 일출/일몰 황금 시간대 데이터" }
+          ],
+          ux: "시간대와 날씨에 따라 UI 톤과 음악의 템포(BPM)가 부드럽게 전환되는 데스크테리어용 디지털 플립 시계입니다.",
+          diff: "단순 알람 시계가 아닌, 공간의 분위기(Vibe)를 시간의 흐름에 맞춰 자동 연출해 주는 감각적 무드 플레이어입니다.",
+          lean: "정적 웹페이지 1장으로 구동되며 오디오 스트림은 브라우저에서 직접 수신하므로 서버비 0원입니다."
+        };
+        ideasVault.unshift(newIdea);
+        localStorage.setItem('vault_ideas', JSON.stringify(ideasVault));
+        renderHero(newIdea.id);
+        renderTable();
+        genBtn.disabled = false;
+        genBtn.innerHTML = `<span>✨</span> 새 아이디어 생성`;
+        showToast("✨ 새로운 아이디어가 생성되어 등록되었습니다!");
+      }, 1000);
+      return;
+    }
+
+    // Call Real Gemini API
+    const model = localStorage.getItem('gemini_model') || 'gemini-2.5-pro';
+    const prompt = `
+당신은 전 세계 285개 오픈/무료 API를 조합해 극도로 독창적인 소프트웨어를 기획하는 수석 프로덕트 아키텍트입니다.
+반드시 아래 JSON 스펙 포맷 그대로 단 하나의 JSON 객체만 응답하세요. 마크다운 코드블럭(\`\`\`json) 없이 순수 JSON만 반환하세요.
+
+JSON Schema:
+{
+  "title": "앱 이름 (영문명)",
+  "hook": "호기심을 자극하는 한 줄 콘셉트 (따옴표 제외)",
+  "mode": "🎯 도메인 집중형 또는 🔀 이종 융합형 또는 🎲 역발상 합성형 중 택1",
+  "divergence": 1에서 5 사이 정수,
+  "originality": 8.0~9.8 사이 실수 (독창성: 단순 기능 나열이 아닌 재해석과 맥락 전환 평가),
+  "feasibility": 7.5~9.5 사이 실수,
+  "devDays": 1~5 사이 정수,
+  "apis": [
+    {"name": "API 명칭", "role": "이 앱에서 담당하는 구체적 역할과 데이터"},
+    {"name": "API 명칭", "role": "이 앱에서 담당하는 구체적 역할과 데이터"}
+  ],
+  "ux": "이 앱이 하는 일 및 핵심 인터랙션 2~3문장",
+  "diff": "기존 유사 앱 대비 차별점",
+  "lean": "서버 비용 0원으로 클라이언트 연산 구현하는 팁"
+}
+`;
+
+    try {
+      const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+      });
+      const data = await resp.json();
+      let rawText = data.candidates[0].content.parts[0].text.trim();
+      rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+      const parsed = JSON.parse(rawText);
+
+      const nextId = ideasVault.length ? Math.max(...ideasVault.map(i => i.id)) + 1 : 1;
+      parsed.id = nextId;
+      ideasVault.unshift(parsed);
+      localStorage.setItem('vault_ideas', JSON.stringify(ideasVault));
+
+      renderHero(parsed.id);
+      renderTable();
+      showToast(`✨ Gemini가 기획한 #${parsed.id} ${parsed.title} 생성 완료!`);
+    } catch (e) {
+      alert("Gemini 호출 오류: API 키 및 콘솔 로그를 확인하세요. " + e.message);
+    } finally {
+      genBtn.disabled = false;
+      genBtn.innerHTML = `<span>✨</span> 새 아이디어 생성`;
+    }
+  }
+
+  // 7. Telegram & Share Tools
+  function copyTelegramTeaser() {
+    const item = ideasVault.find(i => i.id == currentSelectedId);
+    if (!item) return;
+
+    const apiNames = item.apis.map(a => a.name.split(' ')[0]).join(' + ');
+    const url = `${window.location.origin}${window.location.pathname}?id=${item.id}`;
+
+    const text = `💡 [아이디어 #${String(item.id).padStart(3, '0')}] ${item.title}\n🎯 "${item.hook}"\n🔌 결합: ${apiNames}\n🔗 기획 상세: ${url}`;
+    
+    navigator.clipboard.writeText(text).then(() => {
+      showToast("📱 텔레그램 3줄 푸시 텍스트가 복사되었습니다!");
+    });
+  }
+
+  function copyShareLink() {
+    const url = `${window.location.origin}${window.location.pathname}?id=${currentSelectedId}`;
+    navigator.clipboard.writeText(url).then(() => {
+      showToast("🔗 다이렉트 링크가 복사되었습니다!");
+    });
+  }
+
+  // 8. Modal Management
+  function openKeyModal() {
+    document.getElementById('apiKeyInput').value = localStorage.getItem('gemini_api_key') || '';
+    document.getElementById('modelSelect').value = localStorage.getItem('gemini_model') || 'gemini-2.5-pro';
+    document.getElementById('keyModal').style.display = 'flex';
+  }
+  function closeKeyModal() {
+    document.getElementById('keyModal').style.display = 'none';
+  }
+  function saveApiKey() {
+    const key = document.getElementById('apiKeyInput').value.trim();
+    const model = document.getElementById('modelSelect').value;
+    if (key) localStorage.setItem('gemini_api_key', key);
+    else localStorage.removeItem('gemini_api_key');
+    localStorage.setItem('gemini_model', model);
+    closeKeyModal();
+    showToast("⚙️ Gemini API 설정이 저장되었습니다.");
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.innerText = msg;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 2600);
+  }
+</script>
+
+</body>
+</html>
