@@ -333,7 +333,7 @@
       border-bottom-right-radius: var(--radius-md);
     }
 
-    /* Mobile Responsive Card Transformation (< 640px) */
+    /* Mobile Responsive Card Layout */
     @media (max-width: 640px) {
       body { padding: 20px 14px 70px; }
       .glass-card { padding: 20px 16px; }
@@ -388,7 +388,6 @@
       top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(11, 17, 32, 0.75);
       backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
       display: none;
       justify-content: center;
       align-items: center;
@@ -543,22 +542,13 @@
   <div class="glass-card modal-content">
     <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 8px;">⚙️ Gemini API 설정</h2>
     <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 16px;">
-      Google AI Studio 무료 API 키를 등록하면 실시간 기획안을 생성합니다. (기기 로컬에만 안전하게 저장)
+      Google AI Studio 무료 API 키를 등록하면 실시간 기획안을 생성합니다. (기기 로컬에만 안전 저장)
     </p>
 
     <div style="display: flex; flex-direction: column; gap: 12px;">
       <div>
         <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">GEMINI_API_KEY</label>
         <input type="password" class="glass-input" id="apiKeyInput" placeholder="AIzaSy...">
-      </div>
-
-      <div>
-        <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">모델 선택</label>
-        <select class="glass-input" id="modelSelect" style="cursor: pointer; background: #1E293B;">
-          <option value="gemini-2.0-flash">Gemini 2.0 Flash (초고속 추천)</option>
-          <option value="gemini-1.5-pro">Gemini 1.5 Pro (심층 추론)</option>
-          <option value="gemini-1.5-flash">Gemini 1.5 Flash (경량)</option>
-        </select>
       </div>
 
       <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px;">
@@ -571,7 +561,7 @@
 
 <div class="toast-box" id="toast"></div>
 
-<!-- LOGIC -->
+<!-- LOGIC SCRIPT -->
 <script>
   let verifiedApiCatalog = [];
   let eligibleApis = [];
@@ -646,7 +636,7 @@
       eligibleApis = verifiedApiCatalog.filter(a => String(a.idea_engine_eligible).toLowerCase() === 'true');
       document.getElementById('apiCatalogStatus').innerText = `검증 완료 API ${eligibleApis.length}개 실시간 로드 완료`;
     } catch(e) {
-      console.warn("CSV 로드 대체: 기본 카탈로그 풀 가동", e);
+      console.warn("CSV 로드 대체: 기본 카탈로그 가동", e);
       document.getElementById('apiCatalogStatus').innerText = `API 182개 풀 가동 (기본 프리셋)`;
     }
   }
@@ -662,21 +652,13 @@
       let token = '';
       for (let i = 0; i < line.length; i++) {
         const c = line[i];
-        if (c === '"') {
-          inQuotes = !inQuotes;
-        } else if (c === ',' && !inQuotes) {
-          row.push(token.trim().replace(/^"|"$/g, ''));
-          token = '';
-        } else {
-          token += c;
-        }
+        if (c === '"') inQuotes = !inQuotes;
+        else if (c === ',' && !inQuotes) { row.push(token.trim().replace(/^"|"$/g, '')); token = ''; }
+        else token += c;
       }
       row.push(token.trim().replace(/^"|"$/g, ''));
-
       const obj = {};
-      headers.forEach((h, idx) => {
-        obj[h] = row[idx] || '';
-      });
+      headers.forEach((h, idx) => { obj[h] = row[idx] || ''; });
       return obj;
     });
   }
@@ -822,6 +804,38 @@
     renderTable();
   }
 
+  // Auto-Detecting Best Available Gemini Model
+  async function resolveBestModel(apiKey) {
+    try {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+      const data = await res.json();
+      if (data.models && Array.isArray(data.models)) {
+        const supported = data.models
+          .filter(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes('generateContent'))
+          .map(m => m.name.replace('models/', ''));
+        
+        const candidatePreferences = [
+          'gemini-2.0-flash',
+          'gemini-2.5-flash',
+          'gemini-1.5-flash-latest',
+          'gemini-1.5-flash-8b',
+          'gemini-1.5-flash',
+          'gemini-1.5-pro',
+          'gemini-pro'
+        ];
+        
+        for (const pref of candidatePreferences) {
+          if (supported.includes(pref)) return pref;
+        }
+        if (supported.length > 0) return supported[0];
+      }
+    } catch(e) {
+      console.warn("Model list resolution failed:", e);
+    }
+    return 'gemini-2.0-flash';
+  }
+
+  // GEMINI GENERATION ENGINE
   async function generateNewIdea() {
     const apiKey = localStorage.getItem('gemini_api_key');
     const genBtn = document.getElementById('genBtn');
@@ -851,11 +865,7 @@
       ];
     }
 
-    let model = localStorage.getItem('gemini_model') || 'gemini-2.0-flash';
-    if (model.includes('2.5')) {
-      model = 'gemini-2.0-flash';
-      localStorage.setItem('gemini_model', model);
-    }
+    const resolvedModel = await resolveBestModel(apiKey);
 
     const prompt = `
 당신은 전 세계 실시간 오픈 API를 조합해 독창적이고 현실성 높은 소프트웨어를 기획하는 수석 프로덕트 아키텍트입니다.
@@ -867,7 +877,7 @@ ${JSON.stringify(selectedCandidates, null, 2)}
 [작성 규칙]:
 1. 앱의 "title"은 한글 없이 세련된 영문 단독 표기(예: SoundPulse, OrbitPulse, NeonMetro)로만 작성하세요.
 2. "originality"는 흔한 데이터를 다른 감각(사운드/빛/심리)으로 재해석했거나 참신한 통찰을 이끌어냈는지를 평가하여 8.0~9.8 사이 실수로 매기세요.
-3. 반환은 반드시 지정된 JSON Schema 포맷에 맞추어 JSON 형식으로만 응답하세요.
+3. 반환은 마크다운(\`\`\`json) 없이 순수 JSON 포맷으로만 응답하세요.
 
 JSON Schema:
 {
@@ -888,14 +898,11 @@ JSON Schema:
 `;
 
     try {
-      const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+      const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${resolvedModel}:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            responseMimeType: "application/json"
-          }
+          contents: [{ parts: [{ text: prompt }] }]
         })
       });
 
@@ -906,10 +913,11 @@ JSON Schema:
       }
 
       if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
-        throw new Error("Gemini 응답 데이터가 비어 있습니다. 잠시 후 다시 시도해 주세요.");
+        throw new Error("Gemini 응답이 비어 있습니다. 다시 시도해 주세요.");
       }
 
       let rawText = data.candidates[0].content.parts[0].text.trim();
+      rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
       const parsed = JSON.parse(rawText);
 
       const nextId = ideasVault.length ? Math.max(...ideasVault.map(i => i.id)) + 1 : 1;
@@ -951,7 +959,6 @@ JSON Schema:
 
   function openKeyModal() {
     document.getElementById('apiKeyInput').value = localStorage.getItem('gemini_api_key') || '';
-    document.getElementById('modelSelect').value = localStorage.getItem('gemini_model') || 'gemini-2.0-flash';
     document.getElementById('keyModal').style.display = 'flex';
   }
   function closeKeyModal() {
@@ -959,10 +966,8 @@ JSON Schema:
   }
   function saveApiKey() {
     const key = document.getElementById('apiKeyInput').value.trim();
-    const model = document.getElementById('modelSelect').value;
     if (key) localStorage.setItem('gemini_api_key', key);
     else localStorage.removeItem('gemini_api_key');
-    localStorage.setItem('gemini_model', model);
     closeKeyModal();
     showToast("⚙️ Gemini API 설정이 저장되었습니다.");
   }
