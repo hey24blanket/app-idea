@@ -132,7 +132,7 @@
       border-radius: var(--radius-pill);
       border: 1px solid rgba(255, 255, 255, 0.22);
       padding: 10px 18px;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-white);
       outline: none;
       width: 100%;
@@ -333,7 +333,7 @@
       border-bottom-right-radius: var(--radius-md);
     }
 
-    /* Mobile Responsive Card Transformation */
+    /* Mobile Layout */
     @media (max-width: 640px) {
       body { padding: 20px 14px 70px; }
       .glass-card { padding: 20px 16px; }
@@ -383,23 +383,25 @@
       }
     }
 
-    /* Top-Positioned Modal Overlay */
+    /* Modal Layout */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(11, 17, 32, 0.78);
+      background: rgba(11, 17, 32, 0.82);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       display: none;
       justify-content: center;
       align-items: flex-start;
-      padding: 60px 16px 20px;
+      padding: 40px 16px 20px;
       z-index: 1000;
+      overflow-y: auto;
     }
     .modal-content {
       width: 100%;
-      max-width: 440px;
+      max-width: 480px;
       border: 1px solid rgba(255, 255, 255, 0.4);
+      margin-bottom: 40px;
       animation: modalDrop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     @keyframes modalDrop {
@@ -407,7 +409,6 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    /* Input Clear Button */
     .clear-btn {
       position: absolute;
       right: 12px;
@@ -424,10 +425,6 @@
       justify-content: center;
       font-size: 12px;
       cursor: pointer;
-      transition: background 0.15s ease;
-    }
-    .clear-btn:hover {
-      background: rgba(255, 255, 255, 0.35);
     }
 
     .toast-box {
@@ -460,14 +457,14 @@
       <div class="brand-subtitle" id="apiCatalogStatus">285개 공공·무료 API 카탈로그 동기화 중...</div>
     </div>
     <div style="display: flex; gap: 8px; align-items: center;">
-      <button class="btn-glass-secondary" onclick="openKeyModal()">⚙️ Key 설정</button>
+      <button class="btn-glass-secondary" onclick="openKeyModal()">⚙️ 설정 (Key & 알림)</button>
       <button class="btn-glass-primary" onclick="generateNewIdea()" id="genBtn">
         <span>✨</span> 새 아이디어
       </button>
     </div>
   </header>
 
-  <!-- HERO CARD: SELECTED / LATEST IDEA -->
+  <!-- HERO CARD -->
   <section class="glass-card" id="heroSection">
     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
       <div>
@@ -527,8 +524,11 @@
 
     <!-- Actions -->
     <div class="hero-footer-actions">
+      <button class="btn-glass-primary" onclick="sendDirectPush()" style="background: #10B981; color: white;">
+        <span>🚀</span> 스마트폰 푸시 전송
+      </button>
       <button class="btn-glass-secondary" onclick="copyTelegramTeaser()">
-        <span>📱</span> 텔레그램 3줄 복사
+        <span>📱</span> 3줄 복사
       </button>
       <button class="btn-glass-secondary" onclick="copyShareLink()">
         <span>🔗</span> 링크 복사
@@ -568,26 +568,71 @@
 
 </div>
 
-<!-- TOP-POSITIONED KEY MODAL -->
+<!-- SETTINGS MODAL: KEY & NOTIFICATION CHANNELS -->
 <div class="modal-overlay" id="keyModal">
   <div class="glass-card modal-content">
-    <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">⚙️ Gemini API 설정</h2>
-    <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 14px;">
-      Google AI Studio 무료 API 키를 등록하세요. (기기 로컬에만 안전 저장)
+    <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">⚙️ 설정 (Gemini & 알림 푸시)</h2>
+    <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 16px;">
+      API 키와 푸시 알림 채널을 설정하세요. (기기 로컬에만 안전하게 저장)
     </p>
 
-    <div style="display: flex; flex-direction: column; gap: 12px;">
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <!-- Gemini Key Section -->
       <div>
-        <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 6px;">GEMINI_API_KEY</label>
+        <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px;">GEMINI_API_KEY</label>
         <div style="position: relative; width: 100%;">
           <input type="password" class="glass-input" id="apiKeyInput" placeholder="AIzaSy..." style="padding-right: 42px;">
           <button type="button" class="clear-btn" onclick="clearApiKeyInput()" title="키 지우기">✕</button>
         </div>
       </div>
 
-      <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px;">
-        <button class="btn-glass-secondary" onclick="closeKeyModal()">닫기</button>
-        <button class="btn-glass-primary" onclick="saveApiKey()">저장</button>
+      <!-- Telegram Push Section -->
+      <div class="glass-inset" style="padding: 14px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+          <label style="font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+            <input type="checkbox" id="enableTgInput" checked style="accent-color: #38BDF8; width: 16px; height: 16px;">
+            <span>✈️ 텔레그램 (Telegram) 푸시</span>
+          </label>
+          <span class="badge" style="font-size: 10px; padding: 2px 8px;">추천</span>
+        </div>
+        
+        <div id="tgFields" style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+          <input type="password" class="glass-input" id="tgTokenInput" placeholder="봇 토큰 (BOT_TOKEN)">
+          <input type="text" class="glass-input" id="tgChatIdInput" placeholder="채널/채팅 ID (CHAT_ID)">
+        </div>
+      </div>
+
+      <!-- ntfy Push Section -->
+      <div class="glass-inset" style="padding: 14px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+          <label style="font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+            <input type="checkbox" id="enableNtfyInput" style="accent-color: #A855F7; width: 16px; height: 16px;">
+            <span>🔔 ntfy 푸시 (웹/앱)</span>
+          </label>
+        </div>
+        
+        <div id="ntfyFields" style="margin-top: 6px;">
+          <input type="text" class="glass-input" id="ntfyTopicInput" placeholder="ntfy 토픽명 (NTFY_TOPIC)">
+        </div>
+      </div>
+
+      <!-- Auto Push Option -->
+      <div style="display: flex; align-items: center; gap: 8px; padding: 4px 2px;">
+        <input type="checkbox" id="autoPushInput" checked style="accent-color: #10B981; width: 16px; height: 16px; cursor: pointer;">
+        <label for="autoPushInput" style="font-size: 12px; font-weight: 600; color: var(--text-dim); cursor: pointer;">
+          ✨ 새 아이디어 생성 시 자동으로 스마트폰 푸시 전송
+        </label>
+      </div>
+
+      <!-- Modal Footer -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+        <button class="btn-glass-secondary" onclick="sendTestPushAlert()">
+          <span>🔔</span> 푸시 테스트
+        </button>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-glass-secondary" onclick="closeKeyModal()">닫기</button>
+          <button class="btn-glass-primary" onclick="saveSettings()">저장하기</button>
+        </div>
       </div>
     </div>
   </div>
@@ -597,6 +642,11 @@
 
 <!-- LOGIC SCRIPT -->
 <script>
+  // Default Preset Values from Previous Project
+  const DEFAULT_TG_TOKEN = "8943390816:AAFkzTIkvG5tHt4w3CeFwoWh0fOA-W1YXMQ";
+  const DEFAULT_TG_CHAT_ID = "-1004466636412";
+  const DEFAULT_NTFY_TOPIC = "the-forest-camp-alert";
+
   let verifiedApiCatalog = [];
   let eligibleApis = [];
 
@@ -838,6 +888,96 @@
     renderTable();
   }
 
+  // =========================================================================
+  // NOTIFICATION DISPATCH ENGINE (TELEGRAM & NTFY)
+  // =========================================================================
+  async function broadcastPushAlert(item, isTest = false) {
+    const enableTg = localStorage.getItem('push_enable_tg') !== 'false'; // default true
+    const enableNtfy = localStorage.getItem('push_enable_ntfy') === 'true';
+
+    const tgToken = localStorage.getItem('push_tg_token') || DEFAULT_TG_TOKEN;
+    const tgChatId = localStorage.getItem('push_tg_chat_id') || DEFAULT_TG_CHAT_ID;
+    const ntfyTopic = localStorage.getItem('push_ntfy_topic') || DEFAULT_NTFY_TOPIC;
+
+    const url = `${window.location.origin}${window.location.pathname}?id=${item.id}`;
+    const apiNames = item.apis ? item.apis.map(a => a.name.split(' ')[0]).join(' + ') : 'Open APIs';
+
+    let successCount = 0;
+
+    // 1. Telegram Dispatch
+    if (enableTg && tgToken && tgChatId) {
+      try {
+        const tgText = `💡 <b>[아이디어 #${String(item.id).padStart(3, '0')}] ${item.title}</b>\n🎯 <i>"${item.hook}"</i>\n🔌 결합: ${apiNames}\n🔗 기획 상세: ${url}`;
+        const tgEndpoint = `https://api.telegram.org/bot${tgToken}/sendMessage`;
+        const params = new URLSearchParams({
+          chat_id: tgChatId,
+          text: tgText,
+          parse_mode: 'HTML'
+        });
+
+        await fetch(`${tgEndpoint}?${params.toString()}`);
+        successCount++;
+      } catch (e) {
+        console.warn("Telegram push failed:", e);
+      }
+    }
+
+    // 2. ntfy Dispatch
+    if (enableNtfy && ntfyTopic) {
+      try {
+        const title = `💡 [#${String(item.id).padStart(3, '0')}] ${item.title}`;
+        const plainMsg = `🎯 "${item.hook}"\n🔌 결합: ${apiNames}`;
+
+        await fetch(`https://ntfy.sh/${ntfyTopic}`, {
+          method: 'POST',
+          body: plainMsg,
+          headers: {
+            'Title': title,
+            'Priority': 'high',
+            'Tags': 'bulb,rocket',
+            'Click': url
+          }
+        });
+        successCount++;
+      } catch (e) {
+        console.warn("ntfy push failed:", e);
+      }
+    }
+
+    return successCount;
+  }
+
+  async function sendDirectPush() {
+    const item = ideasVault.find(i => i.id == currentSelectedId);
+    if (!item) return;
+
+    showToast("🚀 스마트폰으로 푸시 전송 중...");
+    const sent = await broadcastPushAlert(item);
+    if (sent > 0) {
+      showToast("✅ 푸시 알림이 발송되었습니다!");
+    } else {
+      alert("활성화된 알림 채널이 없거나 설정 정보가 올바르지 않습니다. [⚙️ 설정]을 확인하세요.");
+    }
+  }
+
+  async function sendTestPushAlert() {
+    const testItem = {
+      id: 999,
+      title: "IDEA VAULT Test Alert",
+      hook: "스마트폰 알림 연동 테스트가 성공적으로 완료되었습니다!",
+      apis: [{ name: "Telegram Bot API" }, { name: "ntfy.sh" }]
+    };
+
+    saveSettings(false);
+    showToast("🔔 테스트 알림 발송 중...");
+    const sent = await broadcastPushAlert(testItem, true);
+    if (sent > 0) {
+      showToast("✅ 테스트 알림이 성공적으로 발송되었습니다!");
+    } else {
+      alert("알림 전송 실패: 텔레그램 또는 ntfy 설정을 확인해 주세요.");
+    }
+  }
+
   // Model Auto-Discovery with gemini-3.6-flash
   async function resolveBestModel(apiKey) {
     try {
@@ -873,7 +1013,7 @@
     const genBtn = document.getElementById('genBtn');
     
     if (!apiKey) {
-      alert("우측 상단 [⚙️ Key 설정]을 눌러 Gemini API 키를 먼저 입력해 주세요.");
+      alert("우측 상단 [⚙️ 설정]을 눌러 Gemini API 키를 먼저 입력해 주세요.");
       openKeyModal();
       return;
     }
@@ -909,7 +1049,7 @@ ${JSON.stringify(selectedCandidates, null, 2)}
 [작성 규칙]:
 1. 앱의 "title"은 한글 없이 세련된 영문 단독 표기(예: SoundPulse, OrbitPulse, NeonMetro)로만 작성하세요.
 2. "originality"는 흔한 데이터를 다른 감각(사운드/빛/심리)으로 재해석했거나 참신한 통찰을 이끌어냈는지를 평가하여 8.0~9.8 사이 실수로 매기세요.
-3. 반환은 마크다운(\`\`\`json) 없이 순수 JSON 포맷으로만 응답하세요.
+3. 반환은 마크다운 없이 순수 JSON 포맷으로만 응답하세요.
 
 JSON Schema:
 {
@@ -933,9 +1073,7 @@ JSON Schema:
       const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${resolvedModel}:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }]
-        })
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
       });
 
       const data = await resp.json();
@@ -960,6 +1098,12 @@ JSON Schema:
       renderHero(parsed.id);
       renderTable();
       showToast(`✨ #${parsed.id} ${parsed.title} 생성 완료!`);
+
+      // Auto Push Dispatch
+      const autoPush = localStorage.getItem('push_autopush') !== 'false';
+      if (autoPush) {
+        broadcastPushAlert(parsed);
+      }
     } catch (e) {
       alert(e.message);
     } finally {
@@ -992,22 +1136,46 @@ JSON Schema:
   // MODAL MANAGEMENT
   function openKeyModal() {
     document.getElementById('apiKeyInput').value = localStorage.getItem('gemini_api_key') || '';
+    
+    // Notification Settings
+    document.getElementById('enableTgInput').checked = localStorage.getItem('push_enable_tg') !== 'false';
+    document.getElementById('enableNtfyInput').checked = localStorage.getItem('push_enable_ntfy') === 'true';
+    document.getElementById('autoPushInput').checked = localStorage.getItem('push_autopush') !== 'false';
+
+    document.getElementById('tgTokenInput').value = localStorage.getItem('push_tg_token') || DEFAULT_TG_TOKEN;
+    document.getElementById('tgChatIdInput').value = localStorage.getItem('push_tg_chat_id') || DEFAULT_TG_CHAT_ID;
+    document.getElementById('ntfyTopicInput').value = localStorage.getItem('push_ntfy_topic') || DEFAULT_NTFY_TOPIC;
+
     document.getElementById('keyModal').style.display = 'flex';
   }
+
   function closeKeyModal() {
     document.getElementById('keyModal').style.display = 'none';
   }
+
   function clearApiKeyInput() {
     const input = document.getElementById('apiKeyInput');
     input.value = '';
     input.focus();
   }
-  function saveApiKey() {
+
+  function saveSettings(showNotification = true) {
     const key = document.getElementById('apiKeyInput').value.trim();
     if (key) localStorage.setItem('gemini_api_key', key);
     else localStorage.removeItem('gemini_api_key');
-    closeKeyModal();
-    showToast("⚙️ Gemini API 설정이 저장되었습니다.");
+
+    localStorage.setItem('push_enable_tg', document.getElementById('enableTgInput').checked);
+    localStorage.setItem('push_enable_ntfy', document.getElementById('enableNtfyInput').checked);
+    localStorage.setItem('push_autopush', document.getElementById('autoPushInput').checked);
+
+    localStorage.setItem('push_tg_token', document.getElementById('tgTokenInput').value.trim());
+    localStorage.setItem('push_tg_chat_id', document.getElementById('tgChatIdInput').value.trim());
+    localStorage.setItem('push_ntfy_topic', document.getElementById('ntfyTopicInput').value.trim());
+
+    if (showNotification) {
+      closeKeyModal();
+      showToast("⚙️ 설정이 저장되었습니다.");
+    }
   }
 
   function showToast(msg) {
