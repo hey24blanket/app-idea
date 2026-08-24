@@ -1,10 +1,10 @@
-name: 2-Hour Auto Idea Push
+name: 1-Hour Auto Idea Push
 
 on:
   schedule:
-    # 2시간마다 정각에 실행 (UTC 기준 짝수 시)
-    - cron: '0 */2 * * *'
-  workflow_dispatch: # GitHub 웹에서 수동 실행 테스트 가능
+    # 매 1시간마다 정각에 실행
+    - cron: '0 * * * *'
+  workflow_dispatch: # GitHub 웹에서 수동 [Run workflow] 테스트 가능
 
 jobs:
   push:
