@@ -6,39 +6,43 @@
   <title>💡 IDEA VAULT - API 결합 앱 기획 아카이브</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Pretendard:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <style>
     /* ==========================================================================
-       DESIGN SYSTEM: WARM CLAYMORPHISM & SOFT UI (Based on Foundations Spec)
+       DESIGN SYSTEM: AESTHETIC FROSTED GLASSMORPHISM (visionOS / iOS Aurora)
        ========================================================================== */
     :root {
-      --bg-base: #ECE7DE;
-      --bg-surface: #EDE8DF;
-      --bg-card: #ECE7DE;
+      /* Dynamic Ambient Glows */
+      --glow-blue: #2563EB;
+      --glow-purple: #9333EA;
+      --glow-pink: #EC4899;
+      --glow-peach: #F97316;
       
-      /* Soft Shadows */
-      --shadow-raised: -7px -7px 16px rgba(255, 255, 255, 0.9), 7px 7px 16px rgba(185, 175, 160, 0.45);
-      --shadow-raised-sm: -4px -4px 10px rgba(255, 255, 255, 0.85), 4px 4px 10px rgba(185, 175, 160, 0.35);
-      --shadow-raised-lg: -10px -10px 24px rgba(255, 255, 255, 0.95), 10px 10px 24px rgba(185, 175, 160, 0.5);
-      --shadow-inset: inset 3px 3px 6px rgba(175, 165, 150, 0.4), inset -3px -3px 6px rgba(255, 255, 255, 0.85);
-      --shadow-inset-deep: inset 4px 4px 8px rgba(170, 160, 145, 0.45), inset -4px -4px 8px rgba(255, 255, 255, 0.9);
+      /* Glass Tokens */
+      --glass-bg-card: rgba(255, 255, 255, 0.16);
+      --glass-bg-card-hover: rgba(255, 255, 255, 0.22);
+      --glass-bg-inset: rgba(255, 255, 255, 0.08);
+      --glass-bg-pill: rgba(255, 255, 255, 0.20);
       
-      /* Accent Colors */
-      --primary-teal: #0C535A;
-      --primary-teal-hover: #083D43;
-      --primary-teal-shadow: 4px 4px 12px rgba(12, 83, 90, 0.35);
+      /* Borders & Rim Lights */
+      --glass-border: 1px solid rgba(255, 255, 255, 0.38);
+      --glass-border-subtle: 1px solid rgba(255, 255, 255, 0.20);
+      --glass-border-focused: 1px solid rgba(255, 255, 255, 0.85);
       
-      /* Typography Colors */
-      --text-main: #2C3639;
-      --text-sub: #5E6A6D;
-      --text-muted: #8E999B;
-      --text-accent: #0C535A;
+      /* Shadows & Specular Highlights */
+      --glass-shadow: 0 20px 48px rgba(0, 8, 30, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+      --glass-shadow-sm: 0 8px 24px rgba(0, 8, 30, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.45);
+      --glass-shadow-glow: 0 12px 36px rgba(236, 72, 153, 0.35);
+
+      /* Typography Tokens */
+      --text-white: #FFFFFF;
+      --text-dim: rgba(255, 255, 255, 0.86);
+      --text-muted: rgba(255, 255, 255, 0.58);
+      --text-highlight: #FFE6A7;
       
-      /* Border Tokens */
-      --border-subtle: 1px solid rgba(255, 255, 255, 0.65);
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
+      --radius-sm: 12px;
+      --radius-md: 18px;
+      --radius-lg: 28px;
       --radius-pill: 9999px;
     }
 
@@ -46,17 +50,55 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-family: 'Pretendard', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* Vibrant Ambient Background with Liquid Orbs */
     body {
-      background-color: var(--bg-base);
-      color: var(--text-main);
+      background: #0B1120;
+      color: var(--text-white);
       min-height: 100vh;
-      padding: 32px 20px 80px;
+      padding: 40px 20px 100px;
       display: flex;
       justify-content: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Floating Gradient Orbs */
+    body::before, body::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.85;
+      animation: floatAmbient 18s ease-in-out infinite alternate;
+    }
+
+    body::before {
+      width: 550px;
+      height: 550px;
+      top: -100px;
+      left: 5%;
+      background: radial-gradient(circle, #1E40AF 0%, #7C3AED 50%, #EC4899 100%);
+    }
+
+    body::after {
+      width: 600px;
+      height: 600px;
+      bottom: -150px;
+      right: 5%;
+      background: radial-gradient(circle, #D946EF 0%, #F97316 60%, #FBBF24 100%);
+      animation-delay: -9s;
+    }
+
+    @keyframes floatAmbient {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(60px, 40px) scale(1.1); }
+      100% { transform: translate(-40px, 80px) scale(0.95); }
     }
 
     .app-container {
@@ -65,78 +107,85 @@
       display: flex;
       flex-direction: column;
       gap: 32px;
+      position: relative;
+      z-index: 1;
     }
 
     /* ==========================================================================
-       FOUNDATIONS & COMMON COMPONENTS
+       GLASS COMPONENTS & FOUNDATIONS
        ========================================================================== */
-    .clay-card {
-      background: var(--bg-card);
+    .glass-card {
+      background: var(--glass-bg-card);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: var(--glass-border);
       border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-raised);
-      border: var(--border-subtle);
-      padding: 28px;
+      box-shadow: var(--glass-shadow);
+      padding: 32px;
       position: relative;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .clay-card-raised {
-      box-shadow: var(--shadow-raised-lg);
-    }
-
-    .clay-inset {
-      background: var(--bg-base);
+    .glass-inset {
+      background: var(--glass-bg-inset);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: var(--glass-border-subtle);
       border-radius: var(--radius-md);
-      box-shadow: var(--shadow-inset);
-      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15);
     }
 
-    /* Buttons */
-    .btn-primary {
-      background: var(--primary-teal);
-      color: #FFFFFF;
+    /* Glass Buttons */
+    .btn-glass-primary {
+      background: rgba(255, 255, 255, 0.92);
+      color: #0B1120;
       border: none;
       border-radius: var(--radius-pill);
       padding: 12px 24px;
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: var(--primary-teal-shadow);
+      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25), inset 0 1px 1px #FFFFFF;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
     }
-    .btn-primary:hover {
-      background: var(--primary-teal-hover);
-      transform: translateY(-1px);
+    .btn-glass-primary:hover {
+      background: #FFFFFF;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(255, 255, 255, 0.4);
     }
-    .btn-primary:active {
-      transform: translateY(1px);
-      box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3);
+    .btn-glass-primary:active {
+      transform: translateY(0);
     }
 
-    .btn-secondary {
-      background: var(--bg-base);
-      color: var(--text-main);
-      border: var(--border-subtle);
+    .btn-glass-secondary {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--text-white);
+      border: var(--glass-border-subtle);
       border-radius: var(--radius-pill);
       padding: 10px 20px;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      box-shadow: var(--shadow-raised-sm);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: var(--glass-shadow-sm);
       display: inline-flex;
       align-items: center;
       gap: 8px;
       transition: all 0.2s ease;
     }
-    .btn-secondary:hover {
-      box-shadow: var(--shadow-raised);
+    .btn-glass-secondary:hover {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-1px);
     }
-    .btn-secondary:active, .btn-secondary.active {
-      box-shadow: var(--shadow-inset);
-      color: var(--primary-teal);
-      background: #E8E3DA;
+    .btn-glass-secondary.active {
+      background: rgba(255, 255, 255, 0.32);
+      border-color: #FFFFFF;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8), 0 4px 16px rgba(255, 255, 255, 0.15);
     }
 
     /* Badges */
@@ -148,37 +197,41 @@
       border-radius: var(--radius-pill);
       font-size: 12px;
       font-weight: 700;
-      box-shadow: var(--shadow-raised-sm);
-      background: var(--bg-base);
-      border: var(--border-subtle);
+      background: rgba(255, 255, 255, 0.14);
+      border: var(--glass-border-subtle);
+      backdrop-filter: blur(12px);
+      color: var(--text-white);
     }
-    .badge-teal {
-      background: var(--primary-teal);
-      color: #FFFFFF;
-      box-shadow: var(--primary-teal-shadow);
-      border: none;
+    .badge-accent {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.4), rgba(147, 51, 234, 0.4));
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      box-shadow: 0 4px 16px rgba(236, 72, 153, 0.3);
     }
 
-    /* Input Fields & Select */
-    .input-field {
-      background: var(--bg-base);
+    /* Input Field */
+    .glass-input {
+      background: rgba(255, 255, 255, 0.09);
       border-radius: var(--radius-pill);
-      box-shadow: var(--shadow-inset);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      padding: 12px 20px;
+      border: var(--glass-border-subtle);
+      padding: 12px 22px;
       font-size: 14px;
-      color: var(--text-main);
+      color: var(--text-white);
       outline: none;
       width: 100%;
-      transition: box-shadow 0.2s;
+      backdrop-filter: blur(14px);
+      transition: all 0.2s ease;
     }
-    .input-field:focus {
-      box-shadow: inset 3px 3px 6px rgba(12, 83, 90, 0.2), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
-      border-color: rgba(12, 83, 90, 0.3);
+    .glass-input::placeholder {
+      color: rgba(255, 255, 255, 0.45);
+    }
+    .glass-input:focus {
+      border: var(--glass-border-focused);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
     }
 
     /* ==========================================================================
-       HEADER & CONTROL STRIP
+       HEADER
        ========================================================================== */
     .app-header {
       display: flex;
@@ -188,56 +241,45 @@
       gap: 16px;
     }
     .brand-title {
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 800;
-      letter-spacing: -0.5px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--text-main);
-    }
-    .brand-subtitle {
-      font-size: 13px;
-      color: var(--text-sub);
-      font-weight: 500;
-      margin-top: 4px;
-    }
-
-    .header-actions {
+      letter-spacing: -0.6px;
       display: flex;
       align-items: center;
       gap: 12px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    }
+    .brand-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 4px;
     }
 
     /* ==========================================================================
        HERO CARD: SELECTED / LATEST IDEA (Detailed View)
        ========================================================================== */
     .hero-card {
-      border: 2px solid rgba(255, 255, 255, 0.8);
-      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.45);
     }
-    .hero-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 20px;
-      gap: 16px;
-    }
-    .idea-num {
+    .hero-num {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
-      color: var(--primary-teal);
+      color: var(--text-highlight);
+      text-shadow: 0 0 12px rgba(255, 230, 167, 0.5);
     }
     .idea-title {
-      font-size: 24px;
+      font-size: 28px;
       font-weight: 800;
-      color: var(--text-main);
-      margin: 4px 0 8px;
+      letter-spacing: -0.5px;
+      color: var(--text-white);
+      margin: 8px 0;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
     }
     .idea-hook {
-      font-size: 16px;
-      color: var(--text-sub);
+      font-size: 17px;
+      color: var(--text-dim);
       font-weight: 500;
       line-height: 1.5;
     }
@@ -247,14 +289,15 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 16px;
-      margin: 24px 0;
+      margin: 28px 0;
     }
     .metric-pill {
-      padding: 14px 18px;
+      padding: 16px 20px;
       border-radius: var(--radius-md);
-      box-shadow: var(--shadow-raised-sm);
-      background: var(--bg-surface);
-      border: var(--border-subtle);
+      background: rgba(255, 255, 255, 0.08);
+      border: var(--glass-border-subtle);
+      backdrop-filter: blur(20px);
+      box-shadow: var(--glass-shadow-sm);
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -264,26 +307,27 @@
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.6px;
     }
     .metric-value {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 800;
-      color: var(--primary-teal);
+      color: #FFFFFF;
       font-family: 'JetBrains Mono', monospace;
+      text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
     }
 
-    /* Pipeline & Architecture Section */
+    /* Section Boxes */
     .section-box {
       margin-top: 20px;
-      padding: 20px;
-      border-radius: var(--radius-md);
+      padding: 22px;
     }
     .section-title {
       font-size: 13px;
       font-weight: 800;
       text-transform: uppercase;
-      color: var(--text-main);
+      letter-spacing: 0.5px;
+      color: var(--text-highlight);
       margin-bottom: 12px;
       display: flex;
       align-items: center;
@@ -293,26 +337,26 @@
     .api-tags-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
     }
     .api-tag-item {
-      padding: 10px 14px;
+      padding: 12px 16px;
       border-radius: var(--radius-md);
-      background: var(--bg-surface);
-      box-shadow: var(--shadow-raised-sm);
-      border: var(--border-subtle);
+      background: rgba(255, 255, 255, 0.1);
+      border: var(--glass-border-subtle);
+      backdrop-filter: blur(16px);
       font-size: 13px;
-      flex: 1 1 calc(33.333% - 10px);
+      flex: 1 1 calc(33.333% - 12px);
       min-width: 220px;
     }
     .api-tag-name {
       font-weight: 700;
-      color: var(--primary-teal);
+      color: #FFFFFF;
       margin-bottom: 4px;
     }
     .api-tag-role {
       font-size: 12px;
-      color: var(--text-sub);
+      color: var(--text-dim);
       line-height: 1.4;
     }
 
@@ -330,13 +374,13 @@
       display: flex;
       justify-content: flex-end;
       gap: 12px;
-      margin-top: 24px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(185, 175, 160, 0.25);
+      margin-top: 28px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     /* ==========================================================================
-       ARCHIVE CONTROLS & TABLE / MATRIX VIEW
+       ARCHIVE TABLE & CONTROLS
        ========================================================================== */
     .filter-panel {
       display: flex;
@@ -344,7 +388,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
     .tab-group {
       display: flex;
@@ -356,10 +400,9 @@
       gap: 12px;
       align-items: center;
       flex: 1;
-      max-width: 480px;
+      max-width: 440px;
     }
 
-    /* Archive Table */
     .archive-table {
       width: 100%;
       border-collapse: separate;
@@ -370,88 +413,60 @@
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
-      padding: 0 16px 8px;
+      padding: 0 18px 8px;
       text-align: left;
     }
     .archive-table th.sortable {
       cursor: pointer;
       user-select: none;
+      transition: color 0.2s;
     }
     .archive-table th.sortable:hover {
-      color: var(--primary-teal);
+      color: #FFFFFF;
     }
     .table-row {
-      background: var(--bg-surface);
+      background: rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-md);
-      box-shadow: var(--shadow-raised-sm);
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
       cursor: pointer;
     }
     .table-row:hover {
+      background: rgba(255, 255, 255, 0.16);
       transform: translateY(-2px);
-      box-shadow: var(--shadow-raised);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
     }
     .table-row.selected {
-      box-shadow: var(--shadow-inset);
-      border: 1px solid var(--primary-teal);
-      background: #E8E3DA;
+      background: rgba(255, 255, 255, 0.24);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 32px rgba(236, 72, 153, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.6);
     }
     .table-row td {
-      padding: 16px;
+      padding: 16px 18px;
       font-size: 14px;
-      border-top: var(--border-subtle);
-      border-bottom: var(--border-subtle);
+      border-top: var(--glass-border-subtle);
+      border-bottom: var(--glass-border-subtle);
     }
     .table-row td:first-child {
-      border-left: var(--border-subtle);
+      border-left: var(--glass-border-subtle);
       border-top-left-radius: var(--radius-md);
       border-bottom-left-radius: var(--radius-md);
       font-family: 'JetBrains Mono', monospace;
       font-weight: 700;
-      color: var(--primary-teal);
+      color: var(--text-highlight);
     }
     .table-row td:last-child {
-      border-right: var(--border-subtle);
+      border-right: var(--glass-border-subtle);
       border-top-right-radius: var(--radius-md);
       border-bottom-right-radius: var(--radius-md);
     }
 
-    /* Slider styling */
-    .slider-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 10px 0;
-    }
-    input[type=range] {
-      -webkit-appearance: none;
-      width: 100%;
-      background: transparent;
-    }
-    input[type=range]::-webkit-slider-runnable-track {
-      height: 8px;
-      border-radius: 4px;
-      background: var(--bg-base);
-      box-shadow: var(--shadow-inset);
-    }
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      height: 22px;
-      width: 22px;
-      border-radius: 50%;
-      background: var(--primary-teal);
-      cursor: pointer;
-      margin-top: -7px;
-      box-shadow: var(--primary-teal-shadow);
-      border: 2px solid #FFFFFF;
-    }
-
-    /* Modal Styling */
+    /* Modal Overlay */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(44, 54, 57, 0.4);
-      backdrop-filter: blur(4px);
+      background: rgba(11, 17, 32, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: none;
       justify-content: center;
       align-items: center;
@@ -460,28 +475,34 @@
     }
     .modal-content {
       width: 100%;
-      max-width: 520px;
-      animation: modalPop 0.25s ease;
+      max-width: 500px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     @keyframes modalPop {
       0% { opacity: 0; transform: scale(0.95); }
       100% { opacity: 1; transform: scale(1); }
     }
 
-    /* Toast Notification */
+    /* Toast */
     .toast-box {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--primary-teal);
-      color: #FFFFFF;
-      padding: 12px 24px;
+      bottom: 28px;
+      right: 28px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #0B1120;
+      padding: 14px 24px;
       border-radius: var(--radius-pill);
-      box-shadow: var(--primary-teal-shadow);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
       display: none;
       z-index: 2000;
+      animation: toastIn 0.3s ease;
+    }
+    @keyframes toastIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
   </style>
 </head>
@@ -489,34 +510,30 @@
 
 <div class="app-container">
 
-  <!-- ========================================================================
-       TOP HEADER
-       ======================================================================== -->
+  <!-- TOP HEADER -->
   <header class="app-header">
     <div>
       <div class="brand-title">
         <span>💡</span> IDEA VAULT
-        <span class="badge badge-teal">PRO V2.5</span>
+        <span class="badge badge-accent">PRO V2.5</span>
       </div>
       <div class="brand-subtitle">285개 공공·무료 API 융합 아이디어 & 아키텍처 인큐베이터</div>
     </div>
-    <div class="header-actions">
-      <button class="btn-secondary" onclick="openKeyModal()">⚙️ Gemini Key 설정</button>
-      <button class="btn-primary" onclick="generateNewIdea()" id="genBtn">
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <button class="btn-glass-secondary" onclick="openKeyModal()">⚙️ Gemini Key 설정</button>
+      <button class="btn-glass-primary" onclick="generateNewIdea()" id="genBtn">
         <span>✨</span> 새 아이디어 생성
       </button>
     </div>
   </header>
 
-  <!-- ========================================================================
-       HERO CARD: SELECTED / LATEST IDEA (Detailed View)
-       ======================================================================== -->
-  <section class="clay-card clay-card-raised hero-card" id="heroSection">
-    <div class="hero-header">
+  <!-- HERO CARD: SELECTED / LATEST IDEA -->
+  <section class="glass-card hero-card" id="heroSection">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
       <div>
         <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 6px;">
-          <span class="idea-num" id="heroNum">#042</span>
-          <span class="badge badge-teal" id="heroMode">🔀 이종 융합형</span>
+          <span class="hero-num" id="heroNum">#042</span>
+          <span class="badge badge-accent" id="heroMode">🔀 이종 융합형</span>
           <span class="badge" id="heroDivergence">이질감 Lv.4</span>
         </div>
         <h1 class="idea-title" id="heroTitle">사운드이스케이프 (SoundEscape)</h1>
@@ -540,12 +557,12 @@
       </div>
       <div class="metric-pill">
         <span class="metric-label">💰 인프라 비용</span>
-        <span class="metric-value" style="color: #2D6A4F;">0원 <span style="font-size: 13px; color: var(--text-muted);">(린 아키텍처)</span></span>
+        <span class="metric-value" style="color: #4ADE80;">0원 <span style="font-size: 13px; color: var(--text-muted);">(린 아키텍처)</span></span>
       </div>
     </div>
 
     <!-- API Pipeline -->
-    <div class="clay-inset section-box">
+    <div class="glass-inset section-box">
       <div class="section-title">🔌 결합된 무료 API & 데이터 파이프라인</div>
       <div class="api-tags-container" id="heroApis">
         <!-- Injected via JS -->
@@ -554,59 +571,57 @@
 
     <!-- Detailed 2-Column Info -->
     <div class="detail-grid">
-      <div class="clay-inset section-box">
+      <div class="glass-inset section-box">
         <div class="section-title">🔍 이 앱이 하는 일 (핵심 UX)</div>
-        <p id="heroUx" style="font-size: 14px; line-height: 1.6; color: var(--text-sub);">
+        <p id="heroUx" style="font-size: 14px; line-height: 1.6; color: var(--text-dim);">
           사용자가 전 세계 지도를 탐색할 때, 선택한 도시의 실시간 날씨(비, 눈, 맑음)를 조회하여 현지 로컬 인디 라디오와 실시간 환경음(빗소리 등)을 브라우저 로컬 오디오 엔진에서 합성해 재생합니다.
         </p>
       </div>
-      <div class="clay-inset section-box">
+      <div class="glass-inset section-box">
         <div class="section-title">🏪 유사 서비스 vs 차별화 포인트</div>
-        <p id="heroDiff" style="font-size: 14px; line-height: 1.6; color: var(--text-sub);">
+        <p id="heroDiff" style="font-size: 14px; line-height: 1.6; color: var(--text-dim);">
           'Radio Garden'은 라디오 단일 스트림만 제공하지만, 이 앱은 현지 날씨를 오디오 믹싱의 파라미터로 사용하여 실제 현지에 머무는 듯한 몰입감을 줍니다.
         </p>
       </div>
     </div>
 
     <!-- Lean Architecture Tip -->
-    <div class="clay-inset section-box" style="margin-top: 16px; background: rgba(12, 83, 90, 0.04); border-color: rgba(12, 83, 90, 0.15);">
-      <div class="section-title" style="color: var(--primary-teal);">💡 서버비 0원 린 아키텍처 팁</div>
-      <p id="heroLean" style="font-size: 13px; line-height: 1.5; color: var(--text-main);">
+    <div class="glass-inset section-box" style="margin-top: 16px; background: rgba(74, 222, 128, 0.08); border-color: rgba(74, 222, 128, 0.25);">
+      <div class="section-title" style="color: #4ADE80;">💡 서버비 0원 린 아키텍처 팁</div>
+      <p id="heroLean" style="font-size: 13px; line-height: 1.5; color: var(--text-white);">
         모든 오디오 합성 및 날씨 매핑은 유저 스마트폰/브라우저의 Web Audio API에서 로컬 처리하므로 개발자 서버 트래픽 비용이 전혀 발생하지 않습니다.
       </p>
     </div>
 
     <!-- Actions -->
     <div class="hero-footer-actions">
-      <button class="btn-secondary" onclick="copyTelegramTeaser()">
+      <button class="btn-glass-secondary" onclick="copyTelegramTeaser()">
         <span>📱</span> 텔레그램 3줄 티저 복사
       </button>
-      <button class="btn-secondary" onclick="copyShareLink()">
+      <button class="btn-glass-secondary" onclick="copyShareLink()">
         <span>🔗</span> 다이렉트 링크 복사
       </button>
     </div>
   </section>
 
-  <!-- ========================================================================
-       ARCHIVE & MATRIX SECTION
-       ======================================================================== -->
-  <section class="clay-card">
+  <!-- ARCHIVE SECTION -->
+  <section class="glass-card">
     <div class="filter-panel">
       <!-- Mode Tabs -->
       <div class="tab-group" id="modeTabs">
-        <button class="btn-secondary active" onclick="filterByMode('ALL')">전체 (<span id="countAll">0</span>)</button>
-        <button class="btn-secondary" onclick="filterByMode('🎯 도메인 집중형')">🎯 도메인 집중</button>
-        <button class="btn-secondary" onclick="filterByMode('🔀 이종 융합형')">🔀 이종 융합</button>
-        <button class="btn-secondary" onclick="filterByMode('🎲 역발상 합성형')">🎲 역발상</button>
+        <button class="btn-glass-secondary active" onclick="filterByMode('ALL')">전체 (<span id="countAll">0</span>)</button>
+        <button class="btn-glass-secondary" onclick="filterByMode('🎯 도메인 집중형')">🎯 도메인 집중</button>
+        <button class="btn-glass-secondary" onclick="filterByMode('🔀 이종 융합형')">🔀 이종 융합</button>
+        <button class="btn-glass-secondary" onclick="filterByMode('🎲 역발상 합성형')">🎲 역발상</button>
       </div>
 
-      <!-- Search & Sort -->
+      <!-- Search -->
       <div class="search-sort-group">
-        <input type="text" class="input-field" placeholder="API, 앱 이름, 키워드 검색..." id="searchInput" oninput="renderTable()">
+        <input type="text" class="glass-input" placeholder="API, 앱 이름, 키워드 검색..." id="searchInput" oninput="renderTable()">
       </div>
     </div>
 
-    <!-- Archive Table -->
+    <!-- Table -->
     <div style="overflow-x: auto;">
       <table class="archive-table">
         <thead>
@@ -628,37 +643,35 @@
 
 </div>
 
-<!-- ========================================================================
-     MODAL: GEMINI API KEY & SETTINGS
-     ======================================================================== -->
+<!-- GEMINI KEY SETTINGS MODAL -->
 <div class="modal-overlay" id="keyModal">
-  <div class="clay-card clay-card-raised modal-content">
+  <div class="glass-card modal-content">
     <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 8px;">⚙️ Gemini API 설정</h2>
-    <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 20px; line-height: 1.4;">
-      Google AI Studio에서 발급받은 무료 API 키를 등록하면 브라우저에서 직접 실시간 기획안을 생성합니다. (기기 로컬스토리지에만 저장)
+    <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 20px; line-height: 1.4;">
+      Google AI Studio에서 발급받은 무료 API 키를 등록하면 브라우저에서 직접 실시간 기획안을 생성합니다.
     </p>
 
     <div style="display: flex; flex-direction: column; gap: 16px;">
       <div>
-        <label style="font-size: 12px; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 6px;">
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-white); display: block; margin-bottom: 6px;">
           GEMINI_API_KEY (무료 티어)
         </label>
-        <input type="password" class="input-field" id="apiKeyInput" placeholder="AIzaSy...">
+        <input type="password" class="glass-input" id="apiKeyInput" placeholder="AIzaSy...">
       </div>
 
       <div>
-        <label style="font-size: 12px; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 6px;">
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-white); display: block; margin-bottom: 6px;">
           기본 모델 선택
         </label>
-        <select class="input-field" id="modelSelect" style="cursor: pointer;">
+        <select class="glass-input" id="modelSelect" style="cursor: pointer; background: rgba(11, 17, 32, 0.9);">
           <option value="gemini-2.5-pro">Gemini 2.5 Pro (심층 추론 추천)</option>
           <option value="gemini-2.5-flash">Gemini 2.5 Flash (초고속)</option>
         </select>
       </div>
 
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
-        <button class="btn-secondary" onclick="closeKeyModal()">닫기</button>
-        <button class="btn-primary" onclick="saveApiKey()">저장하기</button>
+        <button class="btn-glass-secondary" onclick="closeKeyModal()">닫기</button>
+        <button class="btn-glass-primary" onclick="saveApiKey()">저장하기</button>
       </div>
     </div>
   </div>
@@ -666,11 +679,8 @@
 
 <div class="toast-box" id="toast">알림 메시지</div>
 
-<!-- ========================================================================
-     APP LOGIC & INITIAL DATASET
-     ======================================================================== -->
+<!-- APP JAVASCRIPT LOGIC -->
 <script>
-  // 1. Initial Master Dataset (Pre-populated high-quality ideas)
   let ideasVault = [
     {
       id: 42,
@@ -750,15 +760,12 @@
   let currentSortKey = 'id';
   let isSortAsc = false;
 
-  // 2. Initialize
   document.addEventListener('DOMContentLoaded', () => {
-    // Load local storage if exists
     const saved = localStorage.getItem('vault_ideas');
     if (saved) {
       try { ideasVault = JSON.parse(saved); } catch(e){}
     }
 
-    // Check URL Param (?id=XX)
     const urlParams = new URLSearchParams(window.location.search);
     const paramId = urlParams.get('id');
     if (paramId && ideasVault.some(i => i.id == paramId)) {
@@ -771,7 +778,6 @@
     renderTable();
   });
 
-  // 3. Render Hero Section
   function renderHero(id) {
     const item = ideasVault.find(i => i.id == id);
     if (!item) return;
@@ -787,7 +793,6 @@
     document.getElementById('heroDays').innerHTML = `${item.devDays}일 컷 <span style="font-size: 13px; color: var(--text-muted);">(MVP)</span>`;
     document.getElementById('heroFeasibility').innerHTML = `${item.feasibility} <span style="font-size: 13px; color: var(--text-muted);">/10</span>`;
 
-    // APIs
     const apisHtml = item.apis.map(api => `
       <div class="api-tag-item">
         <div class="api-tag-name">🔌 ${api.name}</div>
@@ -800,16 +805,13 @@
     document.getElementById('heroDiff').innerText = item.diff;
     document.getElementById('heroLean').innerText = item.lean;
 
-    // Highlight row in table
     document.querySelectorAll('.table-row').forEach(row => {
       row.classList.toggle('selected', row.dataset.id == id);
     });
 
-    // Update URL without reload
     window.history.replaceState(null, '', `?id=${id}`);
   }
 
-  // 4. Render Table
   function renderTable() {
     const search = document.getElementById('searchInput').value.toLowerCase();
     
@@ -821,7 +823,6 @@
       return matchMode && matchSearch;
     });
 
-    // Sort
     filtered.sort((a, b) => {
       let vA = a[currentSortKey] || a.id;
       let vB = b[currentSortKey] || b.id;
@@ -836,21 +837,20 @@
       <tr class="table-row ${item.id === currentSelectedId ? 'selected' : ''}" data-id="${item.id}" onclick="renderHero(${item.id})">
         <td>#${String(item.id).padStart(3, '0')}</td>
         <td>
-          <div style="font-weight: 700; color: var(--text-main); margin-bottom: 2px;">${item.title}</div>
-          <div style="font-size: 12px; color: var(--text-sub);">${item.hook}</div>
+          <div style="font-weight: 700; color: #FFFFFF; margin-bottom: 2px;">${item.title}</div>
+          <div style="font-size: 12px; color: var(--text-dim);">${item.hook}</div>
         </td>
         <td><span class="badge" style="font-size: 11px;">${item.mode}</span></td>
-        <td style="font-family: 'JetBrains Mono'; font-weight: 700; color: var(--primary-teal);">⭐ ${item.originality}</td>
+        <td style="font-family: 'JetBrains Mono'; font-weight: 700; color: var(--text-highlight);">⭐ ${item.originality}</td>
         <td style="font-family: 'JetBrains Mono'; font-weight: 600;">${item.devDays}일</td>
         <td style="font-family: 'JetBrains Mono'; font-weight: 600;">${item.feasibility}</td>
       </tr>
     `).join('');
   }
 
-  // 5. Filter & Sort Handlers
   function filterByMode(mode) {
     activeModeFilter = mode;
-    document.querySelectorAll('#modeTabs .btn-secondary').forEach(btn => {
+    document.querySelectorAll('#modeTabs .btn-glass-secondary').forEach(btn => {
       btn.classList.toggle('active', btn.innerText.includes(mode) || (mode === 'ALL' && btn.innerText.includes('전체')));
     });
     renderTable();
@@ -866,7 +866,6 @@
     renderTable();
   }
 
-  // 6. Gemini API Generation
   async function generateNewIdea() {
     const apiKey = localStorage.getItem('gemini_api_key');
     const genBtn = document.getElementById('genBtn');
@@ -875,7 +874,6 @@
     genBtn.innerHTML = `<span>⏳</span> 생성 중...`;
 
     if (!apiKey) {
-      // Offline fallback: Simulated high-quality generation
       setTimeout(() => {
         const nextId = ideasVault.length ? Math.max(...ideasVault.map(i => i.id)) + 1 : 1;
         const newIdea = {
@@ -907,11 +905,10 @@
       return;
     }
 
-    // Call Real Gemini API
     const model = localStorage.getItem('gemini_model') || 'gemini-2.5-pro';
     const prompt = `
 당신은 전 세계 285개 오픈/무료 API를 조합해 극도로 독창적인 소프트웨어를 기획하는 수석 프로덕트 아키텍트입니다.
-반드시 아래 JSON 스펙 포맷 그대로 단 하나의 JSON 객체만 응답하세요. 마크다운 코드블럭(\`\`\`json) 없이 순수 JSON만 반환하세요.
+반드시 아래 JSON 스펙 포맷 그대로 단 하나의 JSON 객체만 응답하세요. 마크다운 코드블럭 없이 순수 JSON만 반환하세요.
 
 JSON Schema:
 {
@@ -919,7 +916,7 @@ JSON Schema:
   "hook": "호기심을 자극하는 한 줄 콘셉트 (따옴표 제외)",
   "mode": "🎯 도메인 집중형 또는 🔀 이종 융합형 또는 🎲 역발상 합성형 중 택1",
   "divergence": 1에서 5 사이 정수,
-  "originality": 8.0~9.8 사이 실수 (독창성: 단순 기능 나열이 아닌 재해석과 맥락 전환 평가),
+  "originality": 8.0~9.8 사이 실수,
   "feasibility": 7.5~9.5 사이 실수,
   "devDays": 1~5 사이 정수,
   "apis": [
@@ -952,14 +949,13 @@ JSON Schema:
       renderTable();
       showToast(`✨ Gemini가 기획한 #${parsed.id} ${parsed.title} 생성 완료!`);
     } catch (e) {
-      alert("Gemini 호출 오류: API 키 및 콘솔 로그를 확인하세요. " + e.message);
+      alert("Gemini 호출 오류: " + e.message);
     } finally {
       genBtn.disabled = false;
       genBtn.innerHTML = `<span>✨</span> 새 아이디어 생성`;
     }
   }
 
-  // 7. Telegram & Share Tools
   function copyTelegramTeaser() {
     const item = ideasVault.find(i => i.id == currentSelectedId);
     if (!item) return;
@@ -981,7 +977,6 @@ JSON Schema:
     });
   }
 
-  // 8. Modal Management
   function openKeyModal() {
     document.getElementById('apiKeyInput').value = localStorage.getItem('gemini_api_key') || '';
     document.getElementById('modelSelect').value = localStorage.getItem('gemini_model') || 'gemini-2.5-pro';
