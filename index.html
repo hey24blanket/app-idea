@@ -333,7 +333,7 @@
       border-bottom-right-radius: var(--radius-md);
     }
 
-    /* Mobile Responsive Card Layout */
+    /* Mobile Responsive Card Transformation */
     @media (max-width: 640px) {
       body { padding: 20px 14px 70px; }
       .glass-card { padding: 20px 16px; }
@@ -804,7 +804,7 @@
     renderTable();
   }
 
-  // Auto-Detecting Best Available Gemini Model
+  // Model Auto-Discovery with gemini-3.6-flash preference
   async function resolveBestModel(apiKey) {
     try {
       const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
@@ -815,13 +815,11 @@
           .map(m => m.name.replace('models/', ''));
         
         const candidatePreferences = [
-          'gemini-2.0-flash',
+          'gemini-3.6-flash',
+          'gemini-3.0-flash',
           'gemini-2.5-flash',
-          'gemini-1.5-flash-latest',
-          'gemini-1.5-flash-8b',
-          'gemini-1.5-flash',
-          'gemini-1.5-pro',
-          'gemini-pro'
+          'gemini-2.0-flash',
+          'gemini-1.5-flash'
         ];
         
         for (const pref of candidatePreferences) {
@@ -830,12 +828,12 @@
         if (supported.length > 0) return supported[0];
       }
     } catch(e) {
-      console.warn("Model list resolution failed:", e);
+      console.warn("Model list query error:", e);
     }
-    return 'gemini-2.0-flash';
+    return 'gemini-3.6-flash';
   }
 
-  // GEMINI GENERATION ENGINE
+  // GEMINI GENERATION
   async function generateNewIdea() {
     const apiKey = localStorage.getItem('gemini_api_key');
     const genBtn = document.getElementById('genBtn');
