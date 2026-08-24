@@ -3,7 +3,6 @@ import random
 import csv
 import json
 import requests
-import urllib.parse
 
 # GitHub Secrets 또는 환경변수에서 로드
 GEMINI_KEY = os.environ.get("GEMINI_API_KEY")
@@ -61,24 +60,29 @@ def send_push(idea):
     hook = idea.get("hook", "")
     api_names = " + ".join([a.split()[0] for a in idea.get("apis", [])])
     
-    # 1. Telegram
+    # 1. 텔레그램 (제목 없이 훅 + 결합 + 링크 3줄 전송)
     if TG_TOKEN and TG_CHAT_ID:
         tg_text = f"🎯 <b>\"{hook}\"</b>\n🔌 결합: {api_names}\n🔗 {BASE_URL}"
         tg_url = f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage"
         requests.post(tg_url, json={"chat_id": TG_CHAT_ID, "text": tg_text, "parse_mode": "HTML"})
 
-    # 2. ntfy
+    # 2. ntfy (UTF-8 인코딩 보장 + 루트 엔드포인트 전송)
     if NTFY_TOPIC:
-        ntfy_url = f"https://ntfy.sh/{NTFY_TOPIC}"
-        requests.post(ntfy_url, json={
+        ntfy_payload = {
+            "topic": NTFY_TOPIC,
             "message": f"🎯 \"{hook}\"\n🔌 결합: {api_names}",
             "click": BASE_URL,
             "tags": ["dart", "rocket"],
             "priority": 4
-        })
+        }
+        requests.post(
+            "https://ntfy.sh",
+            data=json.dumps(ntfy_payload, ensure_ascii=False).encode('utf-8'),
+            headers={"Content-Type": "application/json; charset=utf-8"}
+        )
 
 if __name__ == "__main__":
     if GEMINI_KEY:
         idea_data = generate_idea()
         send_push(idea_data)
-        print("✅ 2시간 정기 푸시 전송 완료:", idea_data.get("title"))
+        print("✅ 1시간 정기 푸시 전송 완료:", idea_data.get("title"))
