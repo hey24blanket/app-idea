@@ -568,7 +568,7 @@
 
 </div>
 
-<!-- SETTINGS MODAL: KEY & NOTIFICATION CHANNELS -->
+<!-- SETTINGS MODAL -->
 <div class="modal-overlay" id="keyModal">
   <div class="glass-card modal-content">
     <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">⚙️ 설정 (Gemini & 알림 푸시)</h2>
@@ -642,7 +642,6 @@
 
 <!-- LOGIC SCRIPT -->
 <script>
-  // Default Preset Values
   const DEFAULT_TG_TOKEN = "8943390816:AAFkzTIkvG5tHt4w3CeFwoWh0fOA-W1YXMQ";
   const DEFAULT_TG_CHAT_ID = "-1004466636412";
   const DEFAULT_NTFY_TOPIC = "the-forest-camp-alert";
@@ -889,7 +888,7 @@
   }
 
   // =========================================================================
-  // NOTIFICATION DISPATCH ENGINE (TITLE OMITTED / 3-LINE COMPACT)
+  // NOTIFICATION DISPATCH ENGINE (NO-TITLE COMPACT FORMAT)
   // =========================================================================
   async function broadcastPushAlert(item, isTest = false) {
     const enableTg = localStorage.getItem('push_enable_tg') !== 'false';
@@ -904,7 +903,7 @@
 
     let successCount = 0;
 
-    // 1. Telegram Dispatch (3-Line Compact Format: Hook + APIs + Link)
+    // 1. Telegram Dispatch (Compact Format)
     if (enableTg && tgToken && tgChatId) {
       try {
         const tgText = `🎯 <b>"${item.hook}"</b>\n🔌 결합: ${apiNames}\n🔗 상세: ${url}`;
@@ -915,30 +914,33 @@
           parse_mode: 'HTML'
         });
 
-        await fetch(`${tgEndpoint}?${params.toString()}`);
-        successCount++;
+        const res = await fetch(`${tgEndpoint}?${params.toString()}`);
+        if (res.ok) successCount++;
       } catch (e) {
         console.warn("Telegram push failed:", e);
       }
     }
 
-    // 2. ntfy Dispatch (Direct Hook with API combo)
+    // 2. ntfy Dispatch (JSON Body to eliminate Header Encoding Error)
     if (enableNtfy && ntfyTopic) {
       try {
-        const title = `🎯 "${item.hook}"`;
-        const plainMsg = `🔌 결합: ${apiNames}\n🔗 ${url}`;
+        const messageText = `🎯 "${item.hook}"\n🔌 결합: ${apiNames}`;
+        const ntfyEndpoint = `https://ntfy.sh/${encodeURIComponent(ntfyTopic)}`;
 
-        await fetch(`https://ntfy.sh/${ntfyTopic}`, {
+        const res = await fetch(ntfyEndpoint, {
           method: 'POST',
-          body: plainMsg,
           headers: {
-            'Title': title,
-            'Priority': 'high',
-            'Tags': 'dart,rocket',
-            'Click': url
-          }
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: messageText,
+            click: url,
+            tags: ['dart', 'rocket'],
+            priority: 4
+          })
         });
-        successCount++;
+
+        if (res.ok) successCount++;
       } catch (e) {
         console.warn("ntfy push failed:", e);
       }
