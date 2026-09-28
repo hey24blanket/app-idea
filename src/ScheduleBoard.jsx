@@ -1,0 +1,15 @@
+import React,{useState} from 'react';
+import {ChevronLeft,ChevronRight,Check,ArrowUpRight} from 'lucide-react';
+const add=(date,n)=>new Date(Date.parse(date+'T00:00:00Z')+n*86400000).toISOString().slice(0,10);
+export default function ScheduleBoard({projects,today,onSelect,ownerName,tone}){
+ const[offset,setOffset]=useState(0),[view,setView]=useState('week');
+ const base=today||new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul'}).format(new Date());
+ const weekday=new Date(base+'T00:00:00Z').getUTCDay();const monday=add(base,-((weekday+6)%7)+offset*7);const days=Array.from({length:7},(_,i)=>add(monday,i));
+ const items=projects.flatMap(p=>p.milestones.map(m=>({p,m}))).sort((a,b)=>a.m.due.localeCompare(b.m.due));
+ const overdue=items.filter(({m})=>m.status!=='done'&&m.due<days[0]);
+ const stage=({p,m})=>m.status==='done'?'done':p.stage==='waiting'?'waiting':'active';
+ const tile=({p,m})=><button key={p.id+m.id} className={`schedule-card ${tone(p.owner)} ${m.status==='done'?'is-done':''}`} onClick={()=>onSelect(p.id)}><span className="schedule-card-top"><span>{p.category||'프로젝트'}</span>{m.status==='done'?<Check size={15}/>:<ArrowUpRight size={14}/>}</span><small>{p.title}</small><strong>{m.title}</strong><span className="schedule-card-bottom"><span className="person-dot"/>{ownerName(p.owner)}<span>{m.minutes}분</span></span></button>;
+ return <section className="scheduler"><div className="scheduler-heading"><div className="week-navigation"><button aria-label="이전 주" onClick={()=>setOffset(n=>n-1)}><ChevronLeft size={19}/></button><h2>{Number(days[0].slice(5,7))}월 {Number(days[0].slice(8))}일 — {Number(days[6].slice(5,7))}월 {Number(days[6].slice(8))}일</h2><button aria-label="다음 주" onClick={()=>setOffset(n=>n+1)}><ChevronRight size={19}/></button><button className="today-button" onClick={()=>setOffset(0)}>이번 주</button></div><div className="view-switch">{[['week','주간 일정'],['status','진행 보드']].map(([id,label])=><button key={id} className={view===id?'active':''} onClick={()=>setView(id)} aria-pressed={view===id}>{label}</button>)}</div></div>
+ {view==='week'?<><div className="week-scroll"><div className="week-board">{days.map((day,i)=><section className={`day-column ${day===base?'is-today':''}`} key={day}><header><span>{['월','화','수','목','금','토','일'][i]}</span><strong>{Number(day.slice(8))}</strong>{day===base&&<small>오늘</small>}</header><div className="day-cards">{items.filter(({m})=>m.due===day).map(tile)}{!items.some(({m})=>m.due===day)&&<span className="day-empty">—</span>}</div></section>)}</div></div>{overdue.length>0&&<details className="overdue-list"><summary>이전 일정 · {overdue.length}</summary><div>{overdue.map(tile)}</div></details>}<div className="board-footer"><span>이번 주 {items.filter(({m})=>m.due>=days[0]&&m.due<=days[6]).length}개</span><span>마일스톤 목표일 기준</span></div></>:<div className="status-board">{[['active','진행 중'],['waiting','다음에'],['done','완료']].map(([id,label])=><section key={id}><h3>{label}<span>{items.filter(item=>stage(item)===id).length}</span></h3>{items.filter(item=>stage(item)===id).map(tile)}</section>)}</div>}
+ </section>;
+}
