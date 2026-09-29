@@ -1,10 +1,10 @@
 import React,{useEffect,useRef,useState} from 'react';
 import {Pause,Play} from 'lucide-react';
 import './project-bubbles.css';
-export default function ProjectBubbles({projects,onSelect,tone}){
+export default function ProjectBubbles({projects,onSelect,tone,selecting=false,selectedIds=[],canSelect=()=>true}){
  const root=useRef(null),nodes=useRef(new Map()),bodies=useRef([]),drag=useRef(null),select=useRef(onSelect);
  const[paused,setPaused]=useState(()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches);
- const pausedRef=useRef(paused);pausedRef.current=paused;
+ const pausedRef=useRef(paused);pausedRef.current=paused||selecting;
  select.current=onSelect;
  const signature=projects.map(p=>p.id).join('|');
  useEffect(()=>{
@@ -24,5 +24,5 @@ export default function ProjectBubbles({projects,onSelect,tone}){
  function down(e,id){if(e.button!==0)return;const b=bodies.current.find(b=>b.id===id);if(!b)return;const rect=root.current.getBoundingClientRect();drag.current={id,x:e.clientX,y:e.clientY,dx:e.clientX-rect.left-b.x,dy:e.clientY-rect.top-b.y,moved:false};e.currentTarget.setPointerCapture(e.pointerId);}
  function move(e){const d=drag.current;if(!d)return;const b=bodies.current.find(b=>b.id===d.id),rect=root.current.getBoundingClientRect();if(!b)return;if(Math.hypot(e.clientX-d.x,e.clientY-d.y)>6)d.moved=true;b.x=Math.max(b.r,Math.min(rect.width-b.r,e.clientX-rect.left-d.dx));b.y=Math.max(b.r,Math.min(rect.height-b.r,e.clientY-rect.top-d.dy));nodes.current.get(b.id).style.transform=`translate3d(${b.x-b.r}px,${b.y-b.r}px,0)`;}
  function up(e){const d=drag.current;if(!d)return;drag.current=null;if(!d.moved)select.current(d.id);}
- return <section className="project-universe" aria-label="진행 중인 프로젝트"><div ref={root} className="project-bubble-field">{projects.map((p,i)=><button key={p.id} ref={el=>{if(el)nodes.current.set(p.id,el);else nodes.current.delete(p.id);}} className={`project-bubble ${tone(p.owner)} shade-${i%4}`} aria-label={`${p.title} 프로젝트 열기`} title={p.title} onPointerDown={e=>down(e,p.id)} onPointerMove={move} onPointerUp={up} onPointerCancel={()=>{drag.current=null;}} onClick={e=>{if(e.detail===0)onSelect(p.id);}}><span>{p.title}</span></button>)}</div>{!projects.length&&<p className="bubble-empty">진행 중인 프로젝트가 없어요.</p>}{projects.length>0&&<button className="bubble-motion" aria-label={paused?'공 움직이기':'공 움직임 멈추기'} aria-pressed={paused} onClick={()=>setPaused(p=>!p)}>{paused?<Play size={17}/>:<Pause size={17}/>}</button>}</section>;
+ return <section className="project-universe" aria-label="진행 중인 프로젝트"><div ref={root} className="project-bubble-field">{projects.map((p,i)=><button key={p.id} ref={el=>{if(el)nodes.current.set(p.id,el);else nodes.current.delete(p.id);}} className={`project-bubble ${tone(p.owner)} shade-${i%4} ${selectedIds.includes(p.id)?'is-selected':''}`} disabled={selecting&&!canSelect(p)} aria-pressed={selecting?selectedIds.includes(p.id):undefined} aria-label={`${p.title} ${selecting?'선택':'프로젝트 열기'}`} title={p.title} onPointerDown={e=>down(e,p.id)} onPointerMove={move} onPointerUp={up} onPointerCancel={()=>{drag.current=null;}} onClick={e=>{if(e.detail===0)onSelect(p.id);}}><span>{p.title}</span></button>)}</div>{!projects.length&&<p className="bubble-empty">진행 중인 프로젝트가 없어요.</p>}{projects.length>0&&<button className="bubble-motion" aria-label={paused?'공 움직이기':'공 움직임 멈추기'} aria-pressed={paused} onClick={()=>setPaused(p=>!p)}>{paused?<Play size={17}/>:<Pause size={17}/>}</button>}</section>;
 }
