@@ -10,7 +10,7 @@ export default function ProjectOverview({all,user,today,demo,setDemo,tone,onSele
  const toggle=id=>setIds(a=>a.includes(id)?a.filter(x=>x!==id):[...a,id]);
  const milestones=all.filter(p=>!p.archived).flatMap(p=>p.milestones);
  const done=milestones.filter(m=>m.status==='done').length;
- const active=milestones.filter(m=>m.status!=='done'&&m.stage==='active').length;
+ const active=all.filter(p=>!p.archived).flatMap(p=>p.milestones.filter(m=>m.status!=='done'&&(m.stage||p.stage||'waiting')==='active')).length;
  const upcoming=projects.flatMap(p=>p.milestones.filter(m=>m.status!=='done').map(m=>({p,m}))).sort((a,b)=>(a.m.due||'9999').localeCompare(b.m.due||'9999')).slice(0,4);
  useEffect(()=>{if(!confirm)return;const previous=document.activeElement;cancelRef.current?.focus();return()=>previous?.focus?.();},[confirm]);
  async function remove(){setBusy(true);setFailure('');try{await request('delete',{demo,projects:chosen.map(p=>({id:p.id,revision:p.revision}))});setConfirm(false);setIds([]);setSelecting(false);await reload();}catch(e){setFailure(e.message);}finally{setBusy(false);}}
