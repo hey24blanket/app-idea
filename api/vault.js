@@ -48,6 +48,7 @@ module.exports=async(req,res)=>{
       const profile=ProfileSchema.parse(input);if(profile.automatic&&!process.env.CRON_SECRET)throw Object.assign(new Error('예약 실행 연결 후 자동 발행을 켤 수 있습니다.'),{status:409});
       await store.mutate(s=>{s.users[uid].profile=profile;s.users[uid].name=profile.name;});return res.status(200).json({ok:true});
     }
+    if(action==='knowledge-check'){const r=await rag.request(store,uid,{action:'search',query:'사람 사이의 관계와 행동을 이해하는 새로운 창작 아이디어',categoryIds:[],excludedIds:[]});return res.status(200).json({verified:r.searchVerified,checkedAt:r.checkedAt,titles:r.results.slice(0,3).map(d=>d.title)});}
     if(action==='knowledge-import')return res.status(200).json(await knowledge.importKnowledge(store,uid,input));
     if(action==='exploration'){const value=knowledge.Selection.parse(input);await store.mutate(s=>{s.users[uid].exploration=value;});return res.status(200).json({ok:true});}
     if(action==='chat')return res.status(200).json({conversation:await conversations.chat(store,uid,input)});
