@@ -3,6 +3,10 @@ const {defaults,hash,localClock,validatePitch,markdown}=require('../server/domai
 const {authenticate,join,login}=require('../server/auth.cjs');
 const {GitHubStore}=require('../server/store.cjs');
 const council=require('../server/council.cjs');const jobs=require('../server/jobs.cjs');
+const rag=require('../server/rag-client.cjs');
+const cat='cat:WyJwc3ljaG9sb2d5Il0';
+const ragMock=async(store,uid,input)=>({status:'connected',version:'live',checkedAt:new Date().toISOString(),categories:[{id:cat,name:'psychology',path:['psychology'],parentId:null,searchable:1,chunks:1}],results:input.excludedIds?.includes(cat)?[]:[{id:'unit1',title:'관찰',text:'공공장소의 행동과 시선',categoryIds:[cat],sources:[],revision:'live'}],searchVerified:true});
+rag.request=ragMock;
 const sample={title:'새로운 파동',hook:'작게 움직이는 글자를 만드는 실험',genre:'인터랙션 아트',whyYou:['움직임에 관심을 적었어요.'],experience:['쓴다','움직인다','느낀다'],mvp:['한 화면'],excluded:['결제'],approach:['Canvas 실험'],firstExperiment:{action:'한 줄 움직이기',minutes:45,success:'다시 만지고 싶은가',change:'읽기 어렵다면 줄이기'},opportunity:'재미있는 표현',objection:'반복할 이유가 있는가',decision:'한 화면으로 검증',unknowns:['반응 확인 필요'],sourceIds:['profile']};
 class MemoryStore{
  constructor(s){this.s=structuredClone(s);this.docs={};this.writes=0;this.tail=Promise.resolve();}
@@ -33,7 +37,11 @@ test('Semantic duplicate is rewritten once and never published if still duplicat
  const store=new MemoryStore(initial());const original=council.call;council.call=async stage=>({value:stage==='F'?sample:stage==='N'?{duplicate:true,preservesIntent:true,reason:'문자를 물결로 바꾸는 동일한 경험',difference:'',matchingId:'prior'}:{summary:stage,ideas:[],risks:[],questions:[]}});
  try{const run=await jobs.startRun(store,'u');for(let i=0;i<5;i++)await jobs.advance(store,'u',run.date);await assert.rejects(()=>jobs.advance(store,'u',run.date),/DUPLICATE_PITCH/);assert.equal(store.writes,0);assert.equal(store.s.users.u.jobs[run.date].attempts.F,2);}finally{council.call=original;}
 });
-test('RAG import keeps users isolated, rejects unknown classification, and respects exclusions',async()=>{
- const knowledge=require('../server/knowledge.cjs');const store=new MemoryStore(initial());store.read=async path=>store.docs[path]?{value:store.docs[path]}:null;store.write=async(path,value)=>{store.docs[path]=value;};
- const doc={id:'unit1',title:'관찰',text:'공공장소의 행동과 타인의 시선. 한계: 맥락에 따라 다르다.',categoryIds:['psychology'],revision:1,sources:[{title:'근거',url:'https://example.org/paper'}],reviewer:'user',reviewedAt:new Date().toISOString()};await knowledge.importKnowledge(store,'u',{schema:'markov-knowledge-v1',documents:[doc]});assert.equal((await knowledge.retrieve(store,store.s.users.u,'2026-09-29')).evidence.length,1);assert.equal((await knowledge.retrieve(store,initial().users.u,'2026-09-29')).evidence.length,0);store.s.users.u.exploration={categoryIds:[],excludedIds:['psychology'],formats:[]};assert.equal((await knowledge.retrieve(store,store.s.users.u,'2026-09-29')).evidence.length,0);await assert.rejects(()=>knowledge.importKnowledge(store,'u',{schema:'markov-knowledge-v1',documents:[{...doc,categoryIds:['invented']}]}));
+test('Live RAG preserves exclusions and fails closed when unavailable',async()=>{
+ const knowledge=require('../server/knowledge.cjs'),store=new MemoryStore(initial());
+ assert.equal((await knowledge.retrieve(store,store.s.users.u,'2026-09-29')).evidence[0].status,'firebase_active');
+ store.s.users.u.exploration={categoryIds:[],excludedIds:[cat],formats:[]};
+ await assert.rejects(()=>knowledge.retrieve(store,store.s.users.u,'2026-09-29'),/RAG_NO_MATCH/);
+ rag.request=async()=>{throw new Error('RAG_UPSTREAM_503');};
+ try{assert.equal((await knowledge.publicKnowledge(store.s.users.u,store)).status,'unavailable');await assert.rejects(()=>knowledge.retrieve(store,store.s.users.u,'2026-09-29'),/RAG_UPSTREAM/);}finally{rag.request=ragMock;}
 });
