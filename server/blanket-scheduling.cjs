@@ -18,4 +18,8 @@ async function revise(store,user,raw){
  Object.assign(p,{title:v.title,weeklyMinutes:v.weeklyMinutes,pace:v.pace,startDate:v.startDate,targetDate:v.targetDate,archived:v.archived});p.scheduleHistory=[...(p.scheduleHistory||[]),previous].slice(-20);p.revision++;return p;
  });
 }
-module.exports={workload,capacity,revise};
+async function move(store,user,raw){
+ const v=z.object({projectId:z.string(),milestoneId:z.string(),revision:z.number().int(),stage:z.enum(['waiting','active'])}).parse(raw);
+ return store.mutate(s=>{const {project,assigned}=require('./blanket.cjs');const p=project(s,user,v.projectId);if(!assigned(p,user))throw fail('담당자만 상태를 바꿀 수 있습니다.',403);if(p.revision!==v.revision)throw fail('다른 기기에서 변경됐습니다. 다시 불러와 주세요.',409);if(p.archived)throw fail('보관을 해제해 주세요.',409);const m=p.milestones.find(m=>m.id===v.milestoneId);if(!m)throw fail('단계를 찾을 수 없습니다.',404);if(m.status==='done')throw fail('완료 기록은 상태 이동으로 변경할 수 없습니다.',409);m.stage=v.stage;p.revision++;return p;});
+}
+module.exports={workload,capacity,revise,move};
