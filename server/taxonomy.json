@@ -1,0 +1,1196 @@
+{
+  "version": "ce-curriculum-v3",
+  "source": "hey24blanket/chunking-express:data/curriculum.v3.json",
+  "domains": [
+    {
+      "id": "psychology",
+      "number": "01",
+      "name": "인간심리·관계",
+      "topics": [
+        {
+          "id": "psychology.01",
+          "number": "01.01",
+          "name": "인간심리",
+          "subdomain": null,
+          "question": "성격·상황·문화는 인간 행동을 설명할 때 각각 어떤 역할을 하는가?"
+        },
+        {
+          "id": "psychology.02",
+          "number": "01.02",
+          "name": "인지",
+          "subdomain": null,
+          "question": "주의·기억·해석의 차이가 같은 사건을 다르게 이해하게 하는가?"
+        },
+        {
+          "id": "psychology.03",
+          "number": "01.03",
+          "name": "감정",
+          "subdomain": null,
+          "question": "감정의 경험·표현·조절은 어떻게 구분되고 맥락에 따라 달라지는가?"
+        },
+        {
+          "id": "psychology.04",
+          "number": "01.04",
+          "name": "욕망",
+          "subdomain": null,
+          "question": "원하는 것과 좋아하는 것은 언제 다르며 보상 추구에 어떤 차이를 만드는가?"
+        },
+        {
+          "id": "psychology.05",
+          "number": "01.05",
+          "name": "동기",
+          "subdomain": null,
+          "question": "내재적·외재적 동기와 자율성은 과제·기간에 따라 어떤 결과와 연결되는가?"
+        },
+        {
+          "id": "psychology.06",
+          "number": "01.06",
+          "name": "두려움",
+          "subdomain": null,
+          "question": "위협 학습·회피·불확실성은 두려움을 어떻게 설명하며 근거의 범위는 어디까지인가?"
+        },
+        {
+          "id": "psychology.07",
+          "number": "01.07",
+          "name": "정체성",
+          "subdomain": null,
+          "question": "개인·사회·서사 정체성은 어떻게 다르며 생애 전환에서 어떻게 연구되는가?"
+        },
+        {
+          "id": "psychology.08",
+          "number": "01.08",
+          "name": "실패",
+          "subdomain": null,
+          "question": "실패 후 귀인·반추·재도전의 관계는 조건에 따라 어떻게 달라지는가?"
+        },
+        {
+          "id": "psychology.09",
+          "number": "01.09",
+          "name": "회복",
+          "subdomain": null,
+          "question": "회복탄력성과 실제 회복 과정은 어떻게 구분되며 시간에 따라 무엇이 변하는가?"
+        },
+        {
+          "id": "psychology.10",
+          "number": "01.10",
+          "name": "상실",
+          "subdomain": null,
+          "question": "상실 경험의 다양성과 적응 과정은 어떤 연구 설계로 알려져 있는가?"
+        },
+        {
+          "id": "psychology.11",
+          "number": "01.11",
+          "name": "자존감",
+          "subdomain": null,
+          "question": "자존감의 수준·안정성·조건성은 무엇이 다르고 어떤 결과와 연결되는가?"
+        },
+        {
+          "id": "psychology.12",
+          "number": "01.12",
+          "name": "의사결정",
+          "subdomain": null,
+          "question": "선택의 불확실성·시간 압박·프레이밍은 판단에 어떤 차이를 만드는가?"
+        },
+        {
+          "id": "psychology.13",
+          "number": "01.13",
+          "name": "행동",
+          "subdomain": null,
+          "question": "의도·습관·환경 단서는 실제 행동과 어떻게 연결되며 변화 근거는 무엇인가?"
+        },
+        {
+          "id": "psychology.14",
+          "number": "01.14",
+          "name": "관계",
+          "subdomain": null,
+          "question": "관계의 질·상호의존·지지·자율성은 어떤 맥락에서 다르게 작동하는가?"
+        },
+        {
+          "id": "psychology.15",
+          "number": "01.15",
+          "name": "애착",
+          "subdomain": null,
+          "question": "성인 애착의 차원·유형·측정은 어떻게 다르며 관계 변화와 어떤 관련이 있는가?"
+        },
+        {
+          "id": "psychology.16",
+          "number": "01.16",
+          "name": "갈등",
+          "subdomain": null,
+          "question": "갈등의 쟁점·상호작용·회복 과정은 어떤 조건에서 관계 결과와 연결되는가?"
+        },
+        {
+          "id": "psychology.17",
+          "number": "01.17",
+          "name": "신뢰",
+          "subdomain": null,
+          "question": "신뢰의 대상·위험·정보가 달라질 때 형성과 회복 근거는 어떻게 달라지는가?"
+        },
+        {
+          "id": "psychology.18",
+          "number": "01.18",
+          "name": "배신",
+          "subdomain": null,
+          "question": "배신의 인식·맥락·반응을 연구할 때 어떤 정의와 한계를 보존해야 하는가?"
+        },
+        {
+          "id": "psychology.19",
+          "number": "01.19",
+          "name": "경계",
+          "subdomain": null,
+          "question": "대인 경계·자기주장·역할 경계는 어떻게 다르며 어떤 상황에서 연구되는가?"
+        }
+      ]
+    },
+    {
+      "id": "development",
+      "number": "02",
+      "name": "발달·유아심리",
+      "topics": [
+        {
+          "id": "development.01",
+          "number": "02.01",
+          "name": "유아심리학",
+          "subdomain": null,
+          "question": "영유아의 주의·정서·관계 관찰은 나이와 측정 방법에 따라 어떻게 해석해야 하는가?"
+        },
+        {
+          "id": "development.02",
+          "number": "02.02",
+          "name": "발달심리학",
+          "subdomain": null,
+          "question": "횡단면 연령 차이와 개인의 발달 변화는 어떻게 구분되는가?"
+        },
+        {
+          "id": "development.03",
+          "number": "02.03",
+          "name": "감정조절",
+          "subdomain": null,
+          "question": "아동의 감정조절은 연령·상황·측정자에 따라 어떻게 달라지는가?"
+        },
+        {
+          "id": "development.04",
+          "number": "02.04",
+          "name": "공동조절(co-regulation)",
+          "subdomain": null,
+          "question": "부모와 아동의 공동조절은 단방향 지시와 어떻게 구분되고 어떻게 관찰되는가?"
+        },
+        {
+          "id": "development.05",
+          "number": "02.05",
+          "name": "언어 발달",
+          "subdomain": null,
+          "question": "어휘·문법·화용 발달의 근거는 단일언어·다중언어 환경에서 어떻게 다른가?"
+        },
+        {
+          "id": "development.06",
+          "number": "02.06",
+          "name": "사회성 발달",
+          "subdomain": null,
+          "question": "사회적 이해·협력·갈등은 발달과 문화·환경의 영향을 어떻게 받는가?"
+        },
+        {
+          "id": "development.07",
+          "number": "02.07",
+          "name": "충동조절",
+          "subdomain": null,
+          "question": "억제통제 과제와 일상 충동 행동은 어느 정도 구분되어야 하는가?"
+        },
+        {
+          "id": "development.08",
+          "number": "02.08",
+          "name": "자기통제",
+          "subdomain": null,
+          "question": "자기통제·실행기능·환경 지원은 장기 결과와 어떤 관계가 있는가?"
+        },
+        {
+          "id": "development.09",
+          "number": "02.09",
+          "name": "또래관계",
+          "subdomain": null,
+          "question": "친구관계·집단 소속·배제 경험은 연령과 맥락별로 어떻게 연구되는가?"
+        },
+        {
+          "id": "development.10",
+          "number": "02.10",
+          "name": "놀이",
+          "subdomain": null,
+          "question": "자유놀이·지도놀이·구조화 활동의 차이와 결과 근거는 무엇인가?"
+        },
+        {
+          "id": "development.11",
+          "number": "02.11",
+          "name": "부모-아동 상호작용",
+          "subdomain": null,
+          "question": "반응성·상호성·지시성과 아동 결과는 어떤 방법으로 연결되어 연구되는가?"
+        }
+      ]
+    },
+    {
+      "id": "parenting",
+      "number": "03",
+      "name": "육아·가족",
+      "topics": [
+        {
+          "id": "parenting.01",
+          "number": "03.01",
+          "name": "육아 스트레스",
+          "subdomain": null,
+          "question": "육아 스트레스는 일반 스트레스와 어떻게 구분되며 어떤 조건과 연결되는가?"
+        },
+        {
+          "id": "parenting.02",
+          "number": "03.02",
+          "name": "부모 소진",
+          "subdomain": null,
+          "question": "부모 소진의 구성요소와 위험·보호 관련 요인은 연구 설계별로 어떻게 다른가?"
+        },
+        {
+          "id": "parenting.03",
+          "number": "03.03",
+          "name": "양육 방식",
+          "subdomain": null,
+          "question": "양육 유형 분류와 구체적 양육 행동은 문화·발달 단계별로 어떻게 다른가?"
+        },
+        {
+          "id": "parenting.04",
+          "number": "03.04",
+          "name": "부모 감정조절",
+          "subdomain": null,
+          "question": "부모의 감정조절과 아이의 반응은 양방향으로 어떻게 연결되는가?"
+        },
+        {
+          "id": "parenting.05",
+          "number": "03.05",
+          "name": "가족 관계",
+          "subdomain": null,
+          "question": "가족 기능·지지·역할·응집성의 측정과 가족 형태별 차이는 무엇인가?"
+        },
+        {
+          "id": "parenting.06",
+          "number": "03.06",
+          "name": "형제 관계",
+          "subdomain": null,
+          "question": "형제 관계의 친밀·갈등·부모 차등 대우는 어떤 조건과 연결되는가?"
+        },
+        {
+          "id": "parenting.07",
+          "number": "03.07",
+          "name": "부모 갈등",
+          "subdomain": null,
+          "question": "부모 간 갈등·공동양육·아동 결과를 연결하는 근거의 범위는 어디까지인가?"
+        },
+        {
+          "id": "parenting.08",
+          "number": "03.08",
+          "name": "부모의 기대",
+          "subdomain": null,
+          "question": "부모 기대·압력·자율성 지지는 어떻게 구분되고 아동 경험과 연결되는가?"
+        },
+        {
+          "id": "parenting.09",
+          "number": "03.09",
+          "name": "아이의 기질",
+          "subdomain": null,
+          "question": "기질의 차원·안정성·환경과의 적합성은 어떤 연구로 설명되는가?"
+        },
+        {
+          "id": "parenting.10",
+          "number": "03.10",
+          "name": "행동 문제",
+          "subdomain": null,
+          "question": "문제 행동을 연구할 때 빈도·기능·환경·발달 단계를 어떻게 분리하는가?"
+        },
+        {
+          "id": "parenting.11",
+          "number": "03.11",
+          "name": "회복적 대화",
+          "subdomain": null,
+          "question": "갈등 뒤 관계 회복 대화의 구성요소와 실제 효과 근거는 무엇인가?"
+        },
+        {
+          "id": "parenting.12",
+          "number": "03.12",
+          "name": "최신 연구/메타분석",
+          "subdomain": null,
+          "question": "최근 양육 연구의 결론이 기존 지식과 일치·충돌하는지 어떻게 확인할 것인가?"
+        }
+      ]
+    },
+    {
+      "id": "philosophy",
+      "number": "04",
+      "name": "철학·인문학",
+      "topics": [
+        {
+          "id": "philosophy.01",
+          "number": "04.01",
+          "name": "서양철학",
+          "subdomain": null,
+          "question": "좋은 삶에 관해 덕·의무·결과 중심 관점은 무엇을 각각 우선하는가?"
+        },
+        {
+          "id": "philosophy.02",
+          "number": "04.02",
+          "name": "동양철학",
+          "subdomain": null,
+          "question": "유교의 수양·도가의 무위·불교의 집착 이해는 어떻게 다른가?"
+        },
+        {
+          "id": "philosophy.03",
+          "number": "04.03",
+          "name": "윤리",
+          "subdomain": null,
+          "question": "거짓말을 해야 상대를 보호할 수 있다는 상황을 서로 다른 윤리관은 어떻게 판단하는가?"
+        },
+        {
+          "id": "philosophy.04",
+          "number": "04.04",
+          "name": "실존",
+          "subdomain": null,
+          "question": "실존주의에서 불안·선택·진정성은 어떤 문제를 설명하는가?"
+        },
+        {
+          "id": "philosophy.05",
+          "number": "04.05",
+          "name": "의미",
+          "subdomain": null,
+          "question": "삶의 의미를 목적·가치·관계로 설명하는 접근은 어떻게 다른가?"
+        },
+        {
+          "id": "philosophy.06",
+          "number": "04.06",
+          "name": "자유",
+          "subdomain": null,
+          "question": "소극적 자유·적극적 자유·자유의지는 어떤 질문에 답하는가?"
+        },
+        {
+          "id": "philosophy.07",
+          "number": "04.07",
+          "name": "책임",
+          "subdomain": null,
+          "question": "선택의 자유가 제한된 상황에서도 책임을 묻는 논거는 무엇인가?"
+        },
+        {
+          "id": "philosophy.08",
+          "number": "04.08",
+          "name": "행복",
+          "subdomain": null,
+          "question": "쾌락·삶의 충실함·평정은 행복을 어떻게 다르게 정의하는가?"
+        },
+        {
+          "id": "philosophy.09",
+          "number": "04.09",
+          "name": "고통",
+          "subdomain": null,
+          "question": "고통의 원인과 대응을 불교·스토아·현대 윤리 논의는 어떻게 설명하는가?"
+        },
+        {
+          "id": "philosophy.10",
+          "number": "04.10",
+          "name": "죽음",
+          "subdomain": null,
+          "question": "죽음의 두려움과 애도를 다루는 철학적 관점은 무엇인가?"
+        },
+        {
+          "id": "philosophy.11",
+          "number": "04.11",
+          "name": "운명",
+          "subdomain": null,
+          "question": "숙명론·결정론·운명에 대한 수용은 어떻게 구별되는가?"
+        },
+        {
+          "id": "philosophy.12",
+          "number": "04.12",
+          "name": "욕망",
+          "subdomain": null,
+          "question": "욕망을 없애야 한다는 주장과 좋은 욕망을 길러야 한다는 주장은 어떻게 다른가?"
+        },
+        {
+          "id": "philosophy.13",
+          "number": "04.13",
+          "name": "절제",
+          "subdomain": null,
+          "question": "절제와 감정 억압을 구분하는 기준은 무엇인가?"
+        },
+        {
+          "id": "philosophy.14",
+          "number": "04.14",
+          "name": "공동체",
+          "subdomain": null,
+          "question": "개인의 자율성과 공동체 의무가 충돌할 때 어떤 관점을 비교할 수 있는가?"
+        },
+        {
+          "id": "philosophy.15",
+          "number": "04.15",
+          "name": "종교",
+          "subdomain": null,
+          "question": "서로 다른 종교의 의례·윤리·구원 개념을 어떻게 맥락 있게 비교하는가?"
+        },
+        {
+          "id": "philosophy.16",
+          "number": "04.16",
+          "name": "신화",
+          "subdomain": null,
+          "question": "동일한 신화 모티프가 문화마다 같은 의미를 갖는가?"
+        },
+        {
+          "id": "philosophy.17",
+          "number": "04.17",
+          "name": "역사",
+          "subdomain": null,
+          "question": "역사 서술에서 사건 기록·사료의 관점·후대 해석은 어떻게 구분되는가?"
+        },
+        {
+          "id": "philosophy.18",
+          "number": "04.18",
+          "name": "문화",
+          "subdomain": null,
+          "question": "관습을 설명할 때 당사자 의미와 외부 연구자의 분류를 어떻게 함께 보존하는가?"
+        }
+      ]
+    },
+    {
+      "id": "language",
+      "number": "05",
+      "name": "언어·커뮤니케이션",
+      "topics": [
+        {
+          "id": "language.01",
+          "number": "05.01",
+          "name": "언어학",
+          "subdomain": null,
+          "question": "음운·형태·통사·의미·화용 분석은 같은 발화를 어떻게 다르게 설명하는가?"
+        },
+        {
+          "id": "language.02",
+          "number": "05.02",
+          "name": "화용론",
+          "subdomain": null,
+          "question": "같은 말이 부탁·비꼼·거절이 되는 조건은 무엇인가?"
+        },
+        {
+          "id": "language.03",
+          "number": "05.03",
+          "name": "의미론",
+          "subdomain": null,
+          "question": "단어의 뜻·문장의 함의·맥락상 추론은 어떻게 구별되는가?"
+        },
+        {
+          "id": "language.04",
+          "number": "05.04",
+          "name": "담화분석",
+          "subdomain": null,
+          "question": "대화의 순서와 앞뒤 문맥이 한 발화의 기능을 어떻게 바꾸는가?"
+        },
+        {
+          "id": "language.05",
+          "number": "05.05",
+          "name": "수사학",
+          "subdomain": null,
+          "question": "주장·근거·청중을 연결하는 수사 전략은 어떻게 작동하는가?"
+        },
+        {
+          "id": "language.06",
+          "number": "05.06",
+          "name": "대화",
+          "subdomain": null,
+          "question": "대화가 막힐 때 확인 질문·요약·수선은 어떤 역할을 하는가?"
+        },
+        {
+          "id": "language.07",
+          "number": "05.07",
+          "name": "인터뷰",
+          "subdomain": null,
+          "question": "탐색 인터뷰와 검증 인터뷰의 질문·기록 방식은 어떻게 다른가?"
+        },
+        {
+          "id": "language.08",
+          "number": "05.08",
+          "name": "질문법",
+          "subdomain": null,
+          "question": "열린 질문·닫힌 질문·후속 질문은 언제 각각 유용한가?"
+        },
+        {
+          "id": "language.09",
+          "number": "05.09",
+          "name": "경청",
+          "subdomain": null,
+          "question": "경청을 보여주는 반응과 실제 이해를 확인하는 반응은 어떻게 다른가?"
+        },
+        {
+          "id": "language.10",
+          "number": "05.10",
+          "name": "언어습득",
+          "subdomain": null,
+          "question": "첫 언어 습득에서 노출·상호작용·개인차를 어떻게 설명하는가?"
+        },
+        {
+          "id": "language.11",
+          "number": "05.11",
+          "name": "제2언어습득",
+          "subdomain": null,
+          "question": "성인의 제2언어 학습에서 입력·출력·피드백의 효과는 어떤 조건에 달리는가?"
+        },
+        {
+          "id": "language.12",
+          "number": "05.12",
+          "name": "외국어교육",
+          "subdomain": null,
+          "question": "과업·명시적 문법·어휘 반복 학습은 어떤 목표에 적합한가?"
+        },
+        {
+          "id": "language.13",
+          "number": "05.13",
+          "name": "한국어교육",
+          "subdomain": null,
+          "question": "한국어 조사·높임·문형을 학습자의 모국어와 수준에 맞춰 어떻게 설명하는가?"
+        },
+        {
+          "id": "language.14",
+          "number": "05.14",
+          "name": "커뮤니케이션",
+          "subdomain": null,
+          "question": "대면·문자·온라인 매체에서 오해의 원인과 확인 방식은 어떻게 달라지는가?"
+        }
+      ]
+    },
+    {
+      "id": "story",
+      "number": "06",
+      "name": "이야기·서사",
+      "topics": [
+        {
+          "id": "story.01",
+          "number": "06.01",
+          "name": "플롯",
+          "subdomain": null,
+          "question": "같은 사건들을 인과적 플롯과 시간순 사건 목록으로 배열할 때 독자의 이해와 기대는 어떻게 달라지는가?"
+        },
+        {
+          "id": "story.02",
+          "number": "06.02",
+          "name": "비트",
+          "subdomain": null,
+          "question": "장면 안에서 인물의 전술·정보·감정 관계가 바뀌는 비트를 어떻게 식별하며 플롯 단계와 구별하는가?"
+        },
+        {
+          "id": "story.03",
+          "number": "06.03",
+          "name": "장면",
+          "subdomain": null,
+          "question": "장면의 목표·장애·행동·변화가 각각 무엇이며 정보 전달만 하는 장면을 어떻게 진단하는가?"
+        },
+        {
+          "id": "story.04",
+          "number": "06.04",
+          "name": "캐릭터",
+          "subdomain": null,
+          "question": "인물의 행동·관계·말에서 성격을 구성하는 방법과 직접 설명의 장단점은 무엇인가?"
+        },
+        {
+          "id": "story.05",
+          "number": "06.05",
+          "name": "욕망",
+          "subdomain": null,
+          "question": "인물의 명시적 목표와 숨은 필요가 충돌할 때 행동 선택과 장면 갈등은 어떻게 달라지는가?"
+        },
+        {
+          "id": "story.06",
+          "number": "06.06",
+          "name": "갈등",
+          "subdomain": null,
+          "question": "대립 인물 없이도 가치·환경·관계·내적 모순으로 긴장을 만드는 방식은 무엇인가?"
+        },
+        {
+          "id": "story.07",
+          "number": "06.07",
+          "name": "캐릭터 아크",
+          "subdomain": null,
+          "question": "변화하는 인물·변화하지 않는 인물·퇴행하는 인물의 아크는 사건과 어떻게 연결되는가?"
+        },
+        {
+          "id": "story.08",
+          "number": "06.08",
+          "name": "대사",
+          "subdomain": null,
+          "question": "대사가 정보·행동·관계·서브텍스트를 동시에 수행하게 하는 방법과 설명 대사의 용도는 무엇인가?"
+        },
+        {
+          "id": "story.09",
+          "number": "06.09",
+          "name": "장르",
+          "subdomain": null,
+          "question": "장르 관습은 독자의 기대를 어떻게 만들며 혼합·전복할 때 무엇을 유지하거나 바꿀 수 있는가?"
+        },
+        {
+          "id": "story.10",
+          "number": "06.10",
+          "name": "시나리오",
+          "subdomain": null,
+          "question": "아이디어를 로그라인·시놉시스·구성·장면 시나리오로 발전시킬 때 각 산출물은 어떤 결정을 담는가?"
+        },
+        {
+          "id": "story.11",
+          "number": "06.11",
+          "name": "소설",
+          "subdomain": null,
+          "question": "소설의 시점·초점화·서술 시간·문체가 같은 사건의 경험을 어떻게 바꾸는가?"
+        },
+        {
+          "id": "story.12",
+          "number": "06.12",
+          "name": "드라마투르기",
+          "subdomain": null,
+          "question": "텍스트·공연 맥락·관객 경험을 연결하는 드라마투르기의 역할은 극작·연출과 어떻게 다른가?"
+        },
+        {
+          "id": "story.13",
+          "number": "06.13",
+          "name": "서사적 정체성",
+          "subdomain": null,
+          "question": "사람이 삶의 경험을 이야기로 조직한다는 서사적 정체성 개념은 캐릭터 설계에 어떻게 참고할 수 있는가?"
+        },
+        {
+          "id": "story.14",
+          "number": "06.14",
+          "name": "스토리텔링",
+          "subdomain": null,
+          "question": "구전·문자·공연·영상에서 청중과 매체가 이야기의 순서·반복·정보 공개를 어떻게 바꾸는가?"
+        },
+        {
+          "id": "story.15",
+          "number": "06.15",
+          "name": "스토리보드",
+          "subdomain": null,
+          "question": "글로 쓴 장면을 쇼트·시선·행동·음향 정보를 담은 스토리보드로 번역할 때 어떤 결정을 해야 하는가?"
+        }
+      ]
+    },
+    {
+      "id": "film",
+      "number": "07",
+      "name": "영상·미디어 제작",
+      "topics": [
+        {
+          "id": "film.01",
+          "number": "07.01",
+          "name": "영상제작 이론",
+          "subdomain": null,
+          "question": "형식·서사·관객·제작 제약을 함께 고려해 영상 표현을 선택하는 기본 틀은 무엇인가?"
+        },
+        {
+          "id": "film.02",
+          "number": "07.02",
+          "name": "연출",
+          "subdomain": null,
+          "question": "장면 의도를 배우의 행동·동선·카메라·공간 결정으로 바꾸는 연출 방법은 무엇인가?"
+        },
+        {
+          "id": "film.03",
+          "number": "07.03",
+          "name": "촬영",
+          "subdomain": null,
+          "question": "노출·프레임률·셔터·심도·움직임을 장면 의도와 촬영 조건에 맞춰 어떻게 결정하는가?"
+        },
+        {
+          "id": "film.04",
+          "number": "07.04",
+          "name": "렌즈 선택",
+          "subdomain": null,
+          "question": "같은 구도를 만들 때 초점거리·카메라 위치·센서 크기는 원근감과 배경 표현에 어떤 차이를 만드는가?"
+        },
+        {
+          "id": "film.05",
+          "number": "07.05",
+          "name": "카메라 거리",
+          "subdomain": null,
+          "question": "클로즈업·중경·원경과 피사체까지의 실제 거리가 정보·관계·공간감을 어떻게 바꾸는가?"
+        },
+        {
+          "id": "film.06",
+          "number": "07.06",
+          "name": "구도",
+          "subdomain": null,
+          "question": "프레임 안의 배치·여백·깊이·균형을 장면의 정보와 관계에 맞춰 어떻게 선택하는가?"
+        },
+        {
+          "id": "film.07",
+          "number": "07.07",
+          "name": "움직임",
+          "subdomain": null,
+          "question": "카메라 이동·피사체 이동·줌은 각각 시점과 정보 공개를 어떻게 바꾸는가?"
+        },
+        {
+          "id": "film.08",
+          "number": "07.08",
+          "name": "조명",
+          "subdomain": null,
+          "question": "광원의 크기·거리·방향·명암비·색온도를 인물과 공간의 표현에 맞춰 어떻게 정하는가?"
+        },
+        {
+          "id": "film.09",
+          "number": "07.09",
+          "name": "미장센",
+          "subdomain": null,
+          "question": "공간·소품·의상·배우 배치·조명이 함께 장면의 의미를 구성하는 방식은 무엇인가?"
+        },
+        {
+          "id": "film.10",
+          "number": "07.10",
+          "name": "편집",
+          "subdomain": null,
+          "question": "연속성·생략·병치·리액션을 선택할 때 관객의 정보와 감정 흐름은 어떻게 바뀌는가?"
+        },
+        {
+          "id": "film.11",
+          "number": "07.11",
+          "name": "컷 길이",
+          "subdomain": null,
+          "question": "쇼트 지속시간과 장면 리듬을 행동·정보량·관객 주의에 맞춰 어떻게 조정하는가?"
+        },
+        {
+          "id": "film.12",
+          "number": "07.12",
+          "name": "몽타주",
+          "subdomain": null,
+          "question": "샷의 병치가 새로운 의미를 만드는 방식과 연속성 편집의 차이는 무엇인가?"
+        },
+        {
+          "id": "film.13",
+          "number": "07.13",
+          "name": "음향",
+          "subdomain": null,
+          "question": "대사·환경음·효과·침묵·화면 밖 소리는 공간과 시점을 어떻게 만드는가?"
+        },
+        {
+          "id": "film.14",
+          "number": "07.14",
+          "name": "음악",
+          "subdomain": null,
+          "question": "음악의 시작·중단·반복·대조가 장면 해석을 바꾸는 방식과 음악을 쓰지 않는 대안은 무엇인가?"
+        },
+        {
+          "id": "film.15",
+          "number": "07.15",
+          "name": "색",
+          "subdomain": null,
+          "question": "색보정·색관리와 장면의 색채 설계는 어떻게 다르며 촬영부터 출력까지 일관성을 어떻게 유지하는가?"
+        },
+        {
+          "id": "film.16",
+          "number": "07.16",
+          "name": "장면 전환",
+          "subdomain": null,
+          "question": "컷·디졸브·소리 연결·행동 연결로 시간·공간·관점을 바꾸는 기준은 무엇인가?"
+        },
+        {
+          "id": "film.17",
+          "number": "07.17",
+          "name": "180도 규칙",
+          "subdomain": null,
+          "question": "행동축을 유지하거나 의도적으로 넘을 때 공간 관계를 어떻게 전달할 수 있는가?"
+        },
+        {
+          "id": "film.18",
+          "number": "07.18",
+          "name": "시선 유도",
+          "subdomain": null,
+          "question": "움직임·명암·구도·시선 일치·편집이 관객이 보는 위치를 어떻게 유도하는가?"
+        },
+        {
+          "id": "film.19",
+          "number": "07.19",
+          "name": "콘티",
+          "subdomain": null,
+          "question": "대본을 촬영 가능한 샷리스트와 글·그림 콘티로 바꿀 때 빠뜨리면 안 되는 정보는 무엇인가?"
+        },
+        {
+          "id": "film.20",
+          "number": "07.20",
+          "name": "제작 워크플로",
+          "subdomain": null,
+          "question": "기획·촬영·백업·편집·색·음향·출력 사이에서 원본과 결정 기록을 어떻게 보존하는가?"
+        },
+        {
+          "id": "film.21",
+          "number": "07.21",
+          "name": "다큐멘터리",
+          "subdomain": null,
+          "question": "관찰·인터뷰·자료 화면·재연을 엮을 때 사실 주장과 연출 선택을 어떻게 구분하는가?"
+        },
+        {
+          "id": "film.22",
+          "number": "07.22",
+          "name": "광고영상",
+          "subdomain": null,
+          "question": "짧은 시간에 대상·핵심 주장·근거·행동 요청을 연결하는 광고영상의 제작 기준은 무엇인가?"
+        },
+        {
+          "id": "film.23",
+          "number": "07.23",
+          "name": "숏폼",
+          "subdomain": null,
+          "question": "짧은 세로 영상에서 도입·정보량·자막·화면 안전영역·반복을 목적에 맞춰 어떻게 설계하는가?"
+        }
+      ]
+    },
+    {
+      "id": "symbolic",
+      "number": "08",
+      "name": "상징·해석",
+      "topics": [
+        {
+          "id": "symbolic.01",
+          "number": "08.01",
+          "name": "원전",
+          "subdomain": "Saju",
+          "question": "『삼명통회』·『적천수』 등에서 같은 개념이 어떤 판본·주석을 거쳐 전해지는가?"
+        },
+        {
+          "id": "symbolic.02",
+          "number": "08.02",
+          "name": "십신",
+          "subdomain": "Saju",
+          "question": "십신의 관계 정의와 해석적 의미는 어떻게 분리하는가?"
+        },
+        {
+          "id": "symbolic.03",
+          "number": "08.03",
+          "name": "오행",
+          "subdomain": "Saju",
+          "question": "오행의 생극 관계와 생활상의 은유는 각각 어떤 근거를 갖는가?"
+        },
+        {
+          "id": "symbolic.04",
+          "number": "08.04",
+          "name": "합충형파해",
+          "subdomain": "Saju",
+          "question": "합·충·형·파·해의 정의와 해석 우선순위는 학파에 따라 어떻게 다른가?"
+        },
+        {
+          "id": "symbolic.05",
+          "number": "08.05",
+          "name": "신살",
+          "subdomain": "Saju",
+          "question": "신살의 산출 전제와 해석상 지위는 어떤 문헌에 나타나는가?"
+        },
+        {
+          "id": "symbolic.06",
+          "number": "08.06",
+          "name": "운",
+          "subdomain": "Saju",
+          "question": "대운·세운이라는 시간 구분과 그 해석은 어떤 층위의 정보인가?"
+        },
+        {
+          "id": "symbolic.07",
+          "number": "08.07",
+          "name": "학파",
+          "subdomain": "Saju",
+          "question": "격국·억부·조후 등 해석 접근은 무엇을 우선하며 어디서 충돌하는가?"
+        },
+        {
+          "id": "symbolic.08",
+          "number": "08.08",
+          "name": "해석",
+          "subdomain": "Saju",
+          "question": "같은 Engine Fact에 대해 두 해석체계는 어떻게 다른 판단을 제안하는가?"
+        },
+        {
+          "id": "symbolic.09",
+          "number": "08.09",
+          "name": "사례",
+          "subdomain": "Saju",
+          "question": "문헌의 명례가 규칙을 설명하는 예인지 예측력을 검증한 자료인지 어떻게 구분하는가?"
+        },
+        {
+          "id": "symbolic.10",
+          "number": "08.10",
+          "name": "상담적 적용",
+          "subdomain": "Saju",
+          "question": "사주 해석을 자기이해 질문과 행동 선택으로 번역할 때 무엇을 보존해야 하는가?"
+        },
+        {
+          "id": "symbolic.11",
+          "number": "08.11",
+          "name": "전통/현대 점성술",
+          "subdomain": "Astrology",
+          "question": "전통 점성술과 현대 심리 점성술의 목표와 해석 언어는 어떻게 다른가?"
+        },
+        {
+          "id": "symbolic.12",
+          "number": "08.12",
+          "name": "행성",
+          "subdomain": "Astrology",
+          "question": "행성의 관측·계산된 위치와 전통별 상징 배정은 어떻게 다른가?"
+        },
+        {
+          "id": "symbolic.13",
+          "number": "08.13",
+          "name": "하우스",
+          "subdomain": "Astrology",
+          "question": "하우스 체계와 각 하우스의 의미는 무엇을 전제로 하는가?"
+        },
+        {
+          "id": "symbolic.14",
+          "number": "08.14",
+          "name": "별자리",
+          "subdomain": "Astrology",
+          "question": "점성술의 사인과 천문학적 별자리, 열대황도와 항성황도는 어떻게 구별되는가?"
+        },
+        {
+          "id": "symbolic.15",
+          "number": "08.15",
+          "name": "Aspect",
+          "subdomain": "Astrology",
+          "question": "각 관계의 이름·허용오차·해석은 체계에 따라 어떻게 달라지는가?"
+        },
+        {
+          "id": "symbolic.16",
+          "number": "08.16",
+          "name": "역사",
+          "subdomain": "Astrology",
+          "question": "점성술의 전승에서 헬레니즘·이슬람·유럽·현대의 변화는 무엇인가?"
+        },
+        {
+          "id": "symbolic.17",
+          "number": "08.17",
+          "name": "상징",
+          "subdomain": "Astrology",
+          "question": "한 행성·사인의 상징이 문화와 시대에 따라 어떻게 변하는가?"
+        },
+        {
+          "id": "symbolic.18",
+          "number": "08.18",
+          "name": "상담 해석",
+          "subdomain": "Astrology",
+          "question": "점성 상징을 이용한 성찰 대화와 미래 예언을 어떻게 구분하는가?"
+        },
+        {
+          "id": "symbolic.19",
+          "number": "08.19",
+          "name": "카드 도상",
+          "subdomain": "Tarot",
+          "question": "같은 카드 이름의 도상이 RWS와 다른 덱에서 어떻게 다를 수 있는가?"
+        },
+        {
+          "id": "symbolic.20",
+          "number": "08.20",
+          "name": "역사",
+          "subdomain": "Tarot",
+          "question": "타로의 놀이 카드 역사와 후대 점술·오컬트 기원설은 어떻게 구별되는가?"
+        },
+        {
+          "id": "symbolic.21",
+          "number": "08.21",
+          "name": "상징",
+          "subdomain": "Tarot",
+          "question": "웨이트가 설명한 상징과 현대 리더의 의미 확장은 어떻게 구분되는가?"
+        },
+        {
+          "id": "symbolic.22",
+          "number": "08.22",
+          "name": "스프레드",
+          "subdomain": "Tarot",
+          "question": "스프레드의 각 위치가 질문과 해석 범위를 어떻게 정하는가?"
+        },
+        {
+          "id": "symbolic.23",
+          "number": "08.23",
+          "name": "리딩",
+          "subdomain": "Tarot",
+          "question": "카드·위치·질문을 연결할 때 가능한 해석과 근거 밖 추정을 어떻게 구별하는가?"
+        },
+        {
+          "id": "symbolic.24",
+          "number": "08.24",
+          "name": "질문법",
+          "subdomain": "Tarot",
+          "question": "예언을 요구하는 질문을 선택과 성찰을 돕는 질문으로 어떻게 바꿀 수 있는가?"
+        },
+        {
+          "id": "symbolic.25",
+          "number": "08.25",
+          "name": "상담적 적용",
+          "subdomain": "Tarot",
+          "question": "타로를 대화의 재료로 사용할 때 상담 효능 주장과 상징 탐색을 어떻게 구분하는가?"
+        }
+      ]
+    },
+    {
+      "id": "software",
+      "number": "09",
+      "name": "소프트웨어·제품·AI",
+      "topics": [
+        {
+          "id": "software.01",
+          "number": "09.01",
+          "name": "소프트웨어 아키텍처",
+          "subdomain": null,
+          "question": "긴 지식 생산 작업에서 화면/API·큐·작업기·저장소를 어떤 책임으로 나눠야 하는가?"
+        },
+        {
+          "id": "software.02",
+          "number": "09.02",
+          "name": "UX",
+          "subdomain": null,
+          "question": "진행 중·부분 성공·인증 대기를 사용자가 혼동하지 않게 어떤 피드백을 제공해야 하는가?"
+        },
+        {
+          "id": "software.03",
+          "number": "09.03",
+          "name": "제품기획",
+          "subdomain": null,
+          "question": "사용자 요구를 범위·완료조건·검증 가능한 수용기준으로 어떻게 전환하는가?"
+        },
+        {
+          "id": "software.04",
+          "number": "09.04",
+          "name": "AI",
+          "subdomain": null,
+          "question": "생성 모델과 규칙 기반 검사를 어떤 작업에 각각 배치해야 하는가?"
+        },
+        {
+          "id": "software.05",
+          "number": "09.05",
+          "name": "RAG",
+          "subdomain": null,
+          "question": "문서 분할·검색·재순위화 중 어느 단계가 필요한 근거를 놓치는지 어떻게 측정하는가?"
+        },
+        {
+          "id": "software.06",
+          "number": "09.06",
+          "name": "LLM",
+          "subdomain": null,
+          "question": "모델 교체 시 구조화 출력·도구 호출·비용·정확성을 무엇으로 비교하는가?"
+        },
+        {
+          "id": "software.07",
+          "number": "09.07",
+          "name": "테스트",
+          "subdomain": null,
+          "question": "수집부터 배포까지 어떤 실패 사례를 단위·통합·종단 테스트로 나눠야 하는가?"
+        },
+        {
+          "id": "software.08",
+          "number": "09.08",
+          "name": "웹앱",
+          "subdomain": null,
+          "question": "운영자 웹앱에서 인증·권한·서버 비밀·브라우저 상태를 어떻게 분리하는가?"
+        },
+        {
+          "id": "software.09",
+          "number": "09.09",
+          "name": "데이터 구조",
+          "subdomain": null,
+          "question": "원문·근거·지식·청크의 수정과 중복을 추적하려면 어떤 식별자와 버전이 필요한가?"
+        },
+        {
+          "id": "software.10",
+          "number": "09.10",
+          "name": "자동화",
+          "subdomain": null,
+          "question": "자동 작업을 중단·재개해도 결과가 누락되거나 중복되지 않게 하려면 무엇이 필요한가?"
+        },
+        {
+          "id": "software.11",
+          "number": "09.11",
+          "name": "검색",
+          "subdomain": null,
+          "question": "한국어와 영문 용어가 섞인 질문에서 단어 검색과 벡터 검색을 어떻게 비교하는가?"
+        },
+        {
+          "id": "software.12",
+          "number": "09.12",
+          "name": "Agent",
+          "subdomain": null,
+          "question": "자동 탐색 에이전트가 원문의 지시를 실행하지 않고 정해진 범위에서만 행동하게 하려면 어떻게 설계하는가?"
+        },
+        {
+          "id": "software.13",
+          "number": "09.13",
+          "name": "소프트웨어 개발 방법론",
+          "subdomain": null,
+          "question": "작은 검증 가능한 변경으로 기능과 데이터 생산을 함께 완성하는 개발 절차는 무엇인가?"
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "number": "10",
+      "name": "연구·근거·참조",
+      "topics": [
+        {
+          "id": "research.01",
+          "number": "10.01",
+          "name": "연구방법론",
+          "subdomain": null,
+          "question": "실험·관찰·질적 연구는 각각 어떤 질문에 답하고 어떤 추론을 허용하는가?"
+        },
+        {
+          "id": "research.02",
+          "number": "10.02",
+          "name": "논문 읽기",
+          "subdomain": null,
+          "question": "논문의 주장·방법·결과·논의를 어떤 순서로 대조해야 하는가?"
+        },
+        {
+          "id": "research.03",
+          "number": "10.03",
+          "name": "증거 수준",
+          "subdomain": null,
+          "question": "질문에 맞는 근거의 신뢰도·일관성·직접성은 어떻게 평가되는가?"
+        },
+        {
+          "id": "research.04",
+          "number": "10.04",
+          "name": "통계",
+          "subdomain": null,
+          "question": "효과크기·불확실성·표본크기·유의성은 어떻게 구분해 저장해야 하는가?"
+        },
+        {
+          "id": "research.05",
+          "number": "10.05",
+          "name": "메타분석",
+          "subdomain": null,
+          "question": "통합효과·이질성·출판편향·중복 표본은 결론에 어떤 제약을 주는가?"
+        },
+        {
+          "id": "research.06",
+          "number": "10.06",
+          "name": "문헌리뷰",
+          "subdomain": null,
+          "question": "체계적·범위·서술 리뷰는 목적과 검색 재현성에서 어떻게 다른가?"
+        },
+        {
+          "id": "research.07",
+          "number": "10.07",
+          "name": "저작권",
+          "subdomain": null,
+          "question": "발견·읽기·원문 저장·인용·변형·재배포 권한을 어떻게 따로 판정하는가?"
+        },
+        {
+          "id": "research.08",
+          "number": "10.08",
+          "name": "라이선스",
+          "subdomain": null,
+          "question": "CC 등 라이선스의 이름·버전·권리자·적용 범위를 어떻게 정규화하는가?"
+        },
+        {
+          "id": "research.09",
+          "number": "10.09",
+          "name": "출처 검증",
+          "subdomain": null,
+          "question": "DOI·제목·저자·버전·정정·철회를 어떤 자료로 교차 확인하는가?"
+        },
+        {
+          "id": "research.10",
+          "number": "10.10",
+          "name": "Data provenance",
+          "subdomain": null,
+          "question": "원문부터 인용·주장·청크·릴리스까지 생성 이력을 어떻게 재현하는가?"
+        }
+      ]
+    }
+  ]
+}
