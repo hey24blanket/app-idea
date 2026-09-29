@@ -16,7 +16,7 @@ async function publicKnowledge(user,store){
  catch{return {status:'unavailable',selection,categories:[],checkedAt:null};}
 }
 async function importKnowledge(store,uid,raw){const bundle=Bundle.parse(raw);if(new Set(bundle.documents.map(d=>d.id)).size!==bundle.documents.length)throw new Error('KNOWLEDGE_DUPLICATE_ID');const key=hash(JSON.stringify(bundle));const path=`knowledge/${uid}/${key}.json`;if(!await store.read(path))await store.write(path,bundle);await store.mutate(s=>{s.users[uid].knowledge={path,count:bundle.documents.length,updatedAt:new Date().toISOString(),version:key};});return {count:bundle.documents.length};}
-async function retrieve(store,user,date){
+async function retrieve(store,user,date,intent=''){
  const selection=user.exploration||{categoryIds:[],excludedIds:[],formats:[]};
  const live=await rag.request(store,user.id,{action:'inventory'});
  const valid=new Set(live.categories.map(c=>c.id));
@@ -24,9 +24,9 @@ async function retrieve(store,user,date){
  const used=(user.archive||[]).slice(-14).flatMap(p=>p.categoryIds||[]);
  const allowed=live.categories.filter(c=>c.searchable>0&&!excluded.includes(c.id)&&(!selected.length||selected.includes(c.id)||selected.includes(c.parentId))).filter(c=>!c.parentId||selected.includes(c.id));
  const focus=allowed.sort((a,b)=>used.filter(x=>x===a.id).length-used.filter(x=>x===b.id).length||hash(date+user.id+a.id).localeCompare(hash(date+user.id+b.id))).slice(0,2).map(c=>c.id);
- const query=[user.profile.interests,user.profile.skills,...live.categories.filter(c=>focus.includes(c.id)).map(c=>c.path.join(' '))].join(' ').slice(0,5000)||'새로운 창작과 인터랙션 아이디어';
- const result=await rag.request(store,user.id,{action:'search',query,categoryIds:selected.length?selected:focus,excludedIds:excluded});
+ const query=[intent||user.profile.interests,user.profile.skills,...(intent?[]:live.categories.filter(c=>focus.includes(c.id)).map(c=>c.path.join(' ')))].join(' ').slice(0,5000)||'새로운 창작과 인터랙션 아이디어';
+ const result=await rag.request(store,user.id,{action:'search',query,categoryIds:selected.length?selected:intent?[]:focus,excludedIds:excluded});
  if(!result.results.length)throw Object.assign(new Error('RAG_NO_MATCH'),{status:409});
- return {focus,selection,knowledgeStatus:'connected',knowledgeVersion:result.version,observedAt:result.checkedAt,searchVerified:result.searchVerified,evidence:result.results.map(d=>({id:'rag:'+d.id,title:d.title,status:'firebase_active',observedAt:result.checkedAt,revision:d.revision,categoryIds:d.categoryIds,text:d.text,sources:d.sources}))};
+ return {focus,focusLabels:live.categories.filter(c=>focus.includes(c.id)).map(c=>c.path.join(' / ')),selection,knowledgeStatus:'connected',knowledgeVersion:result.version,observedAt:result.checkedAt,searchVerified:result.searchVerified,evidence:result.results.map(d=>({id:'rag:'+d.id,title:d.title,status:'firebase_active',observedAt:result.checkedAt,revision:d.revision,categoryIds:d.categoryIds,text:d.text,sources:d.sources}))};
 }
 module.exports={taxonomy,Selection,Bundle,publicKnowledge,importKnowledge,retrieve,overlap,matches};

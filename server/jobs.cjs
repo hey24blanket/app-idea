@@ -13,7 +13,7 @@ async function startRun(store,uid,input={}){
   if(input.draftId&&(!draft||draft.revision!==input.revision||!draft.pitch||draft.lease?.until>Date.now()))throw Object.assign(new Error('기획서 버전을 다시 확인해 주세요.'),{status:409});
   if(draft?.runKey)return {date:draft.runKey,status:u.jobs[draft.runKey].status};
   if(!draft&&u.jobs[date])return {date,status:u.jobs[date].status};
-  const retrieved=await knowledge.retrieve(store,{...u,id:uid},date);
+  const retrieved=await knowledge.retrieve(store,{...u,id:uid},date,draft?[draft.messages[0]?.text,draft.pitch.title,draft.pitch.hook,...draft.pitch.experience].join(' '):'');
   const prior=await Promise.all(u.archive.slice(-20).map(async a=>{const p=store.pitch?await store.pitch(uid,a.runKey||a.issueDate):null;return {...a,concept:p?{hook:p.hook,experience:p.experience,mvp:p.mvp}:a.concept};}));
   const now=Date.now();return store.mutate(s=>{
     const u=s.users[uid],key=draft?`${date}--${draft.id}`:date;
