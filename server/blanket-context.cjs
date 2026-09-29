@@ -1,7 +1,7 @@
 const {z}=require('zod');
 const blanket=require('./blanket.cjs');
 const {localClock}=require('./domain.cjs');
-const Input=z.object({message:z.string().trim().min(1).max(1500),projectId:z.string().max(100).optional(),demo:z.boolean().default(false)});
+const Input=z.object({message:z.string().trim().min(1).max(1500),projectId:z.string().max(100).optional(),demo:z.boolean().default(false),preview:z.boolean().default(false)});
 const normalize=s=>String(s||'').toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');
 const aliases={'한글파파':['hangulpapa','한글파파'],'사주그랩':['sajugrap','사주그랩'],'마코프블랭킷':['markovblanket','마코프블랭킷']};
 function resolve(state,user,input){
@@ -33,6 +33,7 @@ async function ask(store,user,raw){
  const input=Input.parse(raw),state=await store.state(),resolved=resolve(state,user,input);
  if(!resolved.project)return resolved;
  const p=resolved.project,base=snapshot(p);
+ if(input.preview)return base;
  const day=localClock(user.profile?.timezone||'Asia/Seoul').date;
  let allowed=true;await store.mutate(s=>{const u=s.users[user.id];u.contextUsage||={};if((u.contextUsage[day]||0)>=40){allowed=false;return;}u.contextUsage[day]=(u.contextUsage[day]||0)+1;for(const key of Object.keys(u.contextUsage).sort().slice(0,-7))delete u.contextUsage[key];});
  if(!allowed)return {...base,notice:'오늘 AI 안내 한도에 도달해 저장된 기록으로 안내합니다.'};
