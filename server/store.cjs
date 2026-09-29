@@ -26,7 +26,7 @@ class GitHubStore {
   }
   async state(){const d=await this.read('state.json');if(!d)throw Object.assign(new Error('SETUP_REQUIRED'),{status:503});return d.value;}
   async savePitch(uid,pitch){
-    const path=`pitches/${uid}/${pitch.issueDate}.json`;
+    const path=`pitches/${uid}/${pitch.runKey||pitch.issueDate}.json`;
     const current=await this.read(path);
     if(current && current.value.contentHash!==pitch.contentHash)throw new Error('PITCH_ALREADY_PUBLISHED');
     if(!current)await this.write(path,pitch);
